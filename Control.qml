@@ -7,15 +7,14 @@ Window {
     id: window
     width: 1300
     minimumWidth: 1300
-    height: 540
-    minimumHeight: 540
-    title: "CT3-2022-V1.12"
+    height: 500
+    minimumHeight: 220
+    title: "CF3-2022-V1.8"
     // @disable-check M16
     onClosing: {
         backend.rst()
         backend.close()
     }
-
     Component.onCompleted: {
         x = (Screen.width - width) / 2
         y = (Screen.height - height) / 2
@@ -30,11 +29,7 @@ Window {
 
         TabButton {
             id: cntrlPnl
-            text: "Control Panel"
-        }
-        TabButton {
-            id: mode
-            text: "Scan"
+            text: "Chilas Laser Control Panel"
         }
     }
 
@@ -48,10 +43,6 @@ Window {
 
         PageCntrlPnl {
             id: pageCntrlPnl
-            onLutOnChanged: lutOn ? pageScan.lutOn = true:pageScan.lutOn = false
-        }
-        PageScan {
-            id: pageScan
         }
     }
 
@@ -64,24 +55,13 @@ Window {
     }
 
     Text {
-        id: textIdn
+        id: text1
         text: pageCntrlPnl.idn
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         font.pixelSize: 15
         anchors.bottomMargin: 5
-        anchors.rightMargin: 15
-    }
-
-    Text {
-        id: textTask
-        text: pageScan.scanOn ? "Scanning...":"Scan Stopped"
-        color: pageScan.scanOn ? "#FF0000":"#000000"
-        anchors.left: parent.left
-        anchors.bottom: parent.bottom
-        font.pixelSize: 15
-        anchors.bottomMargin: 5
-        anchors.leftMargin: 15
+        anchors.rightMargin: 10
     }
 }
 

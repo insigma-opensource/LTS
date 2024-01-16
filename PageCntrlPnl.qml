@@ -9,8 +9,8 @@ Pane {
     id: pageCntrlPnl
     width: 1200
     height: 500
+    enabled: true
     property string idn: "Not connected"
-    property bool lutOn: false
 
     Row {
         id: rowCntrlPnl
@@ -22,7 +22,6 @@ Pane {
             id: frameHeater1
             width: 160
             height: parent.height
-            visible: false
 
             Column {
                 id: columnHeater1
@@ -35,22 +34,16 @@ Pane {
 
                     Text {
                         id: textHeaderHeater1
-                        text: "Phase "
+                        text: "Phase 5"
                         font.pixelSize: 18
-                    }
-
-                    TextInput {
-                        id: textIHS1
-                        text: "5"
-                        font.pixelSize: 18
-                        selectByMouse: true
                     }
                 }
 
                 Row {
                     id: rowHeater1
-                    height: columnHeater1.height - textHeaderHeater1.height - colSetGetHeater1.height - switchAh.height - 3*columnHeater1.spacing
+                    height: columnHeater1.height - textHeaderHeater1.height - colSetGetHeater1.height - 2*columnHeater1.spacing
                     anchors.horizontalCenter: parent.horizontalCenter
+                    visible: pageCntrlPnl.height < 250 ? false : true
 
                     Gauge {
                         id: gaugeHeater1
@@ -58,7 +51,7 @@ Pane {
                         antialiasing: true
                         value: 0
                         minimumValue: 0
-                        maximumValue: 15
+                        maximumValue: 14
                         tickmarkStepSize: 1
                         minorTickmarkCount: 1
                         Behavior on value { NumberAnimation { duration: 100 } }
@@ -70,40 +63,13 @@ Pane {
                         antialiasing: true
                         wheelEnabled: true
                         stepSize: 0.01
-                        to: 14.5
+                        to: 14
                         orientation: Qt.Vertical
                         value: 0
                         onValueChanged: {
-                            if (switchAh.checked) {
-                                timerAh.restart()
-                            } else {
-                                gaugeHeater1.value = backend.drvD(parseInt(textIHS1.text), value.toFixed(3)).slice(2)
-                            }
-                        }
-
-                        Timer {
-                            id: timerAh
-                            interval: 100; running: false; repeat: true
-                            property int t_coun: 0
-                            onTriggered: {
-                                gaugeHeater1.value = backend.drvD(parseInt(textIHS1.text), ((sliderHeater1.value**2+(3-t_coun)*10)**0.5).toFixed(3)).slice(2)
-                                t_coun++
-                                if(t_coun > 3) {
-                                    stop()
-                                    t_coun = 0
-                                    interval = 100
-                                } else if(t_coun > 2) {
-                                    interval = 500
-                                }
-                            }
+                            gaugeHeater1.value = backend.drvD(5, value.toFixed(2)).slice(2)
                         }
                     }
-                }
-
-                Switch {
-                    id: switchAh
-                    text: "Anti-Hyst."
-                    anchors.horizontalCenter: parent.horizontalCenter
                 }
 
                 Column {
@@ -113,7 +79,8 @@ Pane {
 
                     Row {
                         id: rowSetHeater1
-                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: 40
 
                         Text {
                             id: textSetHeater1
@@ -125,12 +92,12 @@ Pane {
 
                         TextInput {
                             id: textEditSetHeater1
-                            text: sliderHeater1.value.toFixed(3)
+                            text: sliderHeater1.value.toFixed(2)
                             anchors.verticalCenter: parent.verticalCenter
                             font.pixelSize: 18
                             cursorVisible: true
                             selectByMouse: true
-                            validator: DoubleValidator{ locale: ""; top: 14.5; bottom: 0;}
+                            validator: DoubleValidator{ locale: ""; top: 12; bottom: 0;}
                             onAccepted: {
                                 sliderHeater1.value = text
                             }
@@ -147,14 +114,14 @@ Pane {
                                         if (curs > 2) {
                                             sliderHeater1.value += 1
                                         } else {
-                                            sliderHeater1.value += (10**curs)/1000
+                                            sliderHeater1.value += (10**(curs+1))/1000
                                         }
 
                                     } else {
                                         if (curs > 2) {
                                             sliderHeater1.value -= 1
                                         } else {
-                                            sliderHeater1.value -= (10**curs)/1000
+                                            sliderHeater1.value -= (10**(curs+1))/1000
                                         }
                                     }
                                     textEditSetHeater1.cursorPosition = textEditSetHeater1.text.length - curs
@@ -169,12 +136,14 @@ Pane {
 
                         Text {
                             id: textGetHeater1
-                            text: "Get: " + gaugeHeater1.value.toFixed(3) + " V"
+                            text: "Get: " + gaugeHeater1.value.toFixed(2) + " V"
                             font.pixelSize: 18
                             minimumPixelSize: 15
                         }
                     }
                 }
+
+
             }
         }
 
@@ -182,7 +151,7 @@ Pane {
             id: frameHeater2
             width: 160
             height: parent.height
-            visible: false
+
             Column {
                 id: columnHeater2
                 anchors.fill: parent
@@ -193,22 +162,16 @@ Pane {
 
                     Text {
                         id: textHeaderHeater2
-                        text: "Large Ring "
+                        text: "Large Ring 3"
                         font.pixelSize: 18
                     }
-
-                    TextInput {
-                        id: textIHS2
-                        text: "3"
-                        font.pixelSize: 18
-                        selectByMouse: true
-                    }
-
                 }
 
                 Row {
                     id: rowHeater2
                     height: columnHeater2.height - textHeaderHeater2.height - colSetGetHeater2.height - 2*columnHeater2.spacing
+                    visible: pageCntrlPnl.height < 250 ? false : true
+
                     Gauge {
                         id: gaugeHeater2
                         height: parent.height
@@ -217,7 +180,7 @@ Pane {
                         minimumValue: 0
                         value: sliderHeater2.value
                         minorTickmarkCount: 1
-                        maximumValue: 15
+                        maximumValue: 14
                         Behavior on value { NumberAnimation { duration: 100 } }
                     }
 
@@ -229,9 +192,9 @@ Pane {
                         wheelEnabled: true
                         value: 0
                         orientation: Qt.Vertical
-                        to: 14.5
+                        to: 14
                         onValueChanged: {
-                            gaugeHeater2.value = backend.drvD(parseInt(textIHS2.text), value.toFixed(3)).slice(2)
+                            gaugeHeater2.value = backend.drvD(3, value.toFixed(2)).slice(2)
                         }
                     }
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -243,7 +206,7 @@ Pane {
                     height: 41
                     Row {
                         id: rowSetHeater2
-                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.left: parent.left
                         Text {
                             id: textSetHeater2
                             text: "Set: "
@@ -253,10 +216,10 @@ Pane {
 
                         TextInput {
                             id: textEditSetHeater2
-                            text: sliderHeater2.value.toFixed(3)
+                            text: sliderHeater2.value.toFixed(2)
                             font.pixelSize: 18
                             selectByMouse: true
-                            validator: DoubleValidator{ locale: ""; bottom: 0; top: 14.5;}
+                            validator: DoubleValidator{ locale: ""; bottom: 0; top: 12;}
                             onAccepted: {
                                 sliderHeater2.value = text
                             }
@@ -273,20 +236,21 @@ Pane {
                                         if (curs > 2) {
                                             sliderHeater2.value += 1
                                         } else {
-                                            sliderHeater2.value += (10**curs)/1000
+                                            sliderHeater2.value += (10**(curs+1))/1000
                                         }
 
                                     } else {
                                         if (curs > 2) {
                                             sliderHeater2.value -= 1
                                         } else {
-                                            sliderHeater2.value -= (10**curs)/1000
+                                            sliderHeater2.value -= (10**(curs+1))/1000
                                         }
                                     }
                                     textEditSetHeater2.cursorPosition = textEditSetHeater2.text.length - curs
                                 }
                             }
                         }
+                        anchors.leftMargin: 40
                     }
 
                     Row {
@@ -294,7 +258,7 @@ Pane {
                         anchors.left: rowSetHeater2.left
                         Text {
                             id: textGetHeater2
-                            text: "Get: " + gaugeHeater2.value.toFixed(3) + " V"
+                            text: "Get: " + gaugeHeater2.value.toFixed(2) + " V"
                             font.pixelSize: 18
                         }
                     }
@@ -307,7 +271,7 @@ Pane {
             id: frameHeater3
             width: 160
             height: parent.height
-            visible: false
+
             Column {
                 id: columnHeater3
                 anchors.fill: parent
@@ -318,22 +282,16 @@ Pane {
 
                     Text {
                         id: textHeaderHeater3
-                        text: "Small Ring "
+                        text: "Small Ring 4"
                         font.pixelSize: 18
                     }
-
-                    TextInput {
-                        id: textIHS3
-                        text: "4"
-                        font.pixelSize: 18
-                        selectByMouse: true
-                    }
-
                 }
 
                 Row {
                     id: rowHeater3
                     height: columnHeater3.height - textHeaderHeater3.height - colSetGetHeater3.height - 2*columnHeater3.spacing
+                    visible: pageCntrlPnl.height < 250 ? false : true
+
                     Gauge {
                         id: gaugeHeater3
                         height: parent.height
@@ -342,7 +300,7 @@ Pane {
                         minimumValue: 0
                         value: sliderHeater3.value
                         minorTickmarkCount: 1
-                        maximumValue: 15
+                        maximumValue: 14
                         Behavior on value { NumberAnimation { duration: 100 } }
                     }
 
@@ -354,9 +312,9 @@ Pane {
                         wheelEnabled: true
                         value: 0
                         orientation: Qt.Vertical
-                        to: 14.5
+                        to: 14
                         onValueChanged: {
-                            gaugeHeater3.value = backend.drvD(parseInt(textIHS3.text), value.toFixed(3)).slice(2)
+                            gaugeHeater3.value = backend.drvD(4, value.toFixed(2)).slice(2)
                         }
                     }
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -368,7 +326,7 @@ Pane {
                     height: 41
                     Row {
                         id: rowSetHeater3
-                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.left: parent.left
                         Text {
                             id: textSetHeater3
                             text: "Set: "
@@ -378,10 +336,10 @@ Pane {
 
                         TextInput {
                             id: textEditSetHeater3
-                            text: sliderHeater3.value.toFixed(3)
+                            text: sliderHeater3.value.toFixed(2)
                             font.pixelSize: 18
                             selectByMouse: true
-                            validator: DoubleValidator{ locale: ""; bottom: 0; top: 14.5;}
+                            validator: DoubleValidator{ locale: ""; bottom: 0; top: 12;}
                             onAccepted: {
                                 sliderHeater3.value = text
                             }
@@ -398,20 +356,21 @@ Pane {
                                         if (curs > 2) {
                                             sliderHeater3.value += 1
                                         } else {
-                                            sliderHeater3.value += (10**curs)/1000
+                                            sliderHeater3.value += (10**(curs+1))/1000
                                         }
 
                                     } else {
                                         if (curs > 2) {
                                             sliderHeater3.value -= 1
                                         } else {
-                                            sliderHeater3.value -= (10**curs)/1000
+                                            sliderHeater3.value -= (10**(curs+1))/1000
                                         }
                                     }
                                     textEditSetHeater3.cursorPosition = textEditSetHeater3.text.length - curs
                                 }
                             }
                         }
+                        anchors.leftMargin: 40
                     }
 
                     Row {
@@ -419,7 +378,7 @@ Pane {
                         anchors.left: rowSetHeater3.left
                         Text {
                             id: textGetHeater3
-                            text: "Get: " + gaugeHeater3.value.toFixed(3) + " V"
+                            text: "Get: " + gaugeHeater3.value.toFixed(2) + " V"
                             font.pixelSize: 18
                         }
                     }
@@ -432,12 +391,10 @@ Pane {
             id: frameHeater4
             width: 160
             height: parent.height
-            visible: false
 
             Column {
                 id: columnHeater4
                 anchors.fill: parent
-                spacing: 15
 
                 Row {
                     id: row4
@@ -445,32 +402,25 @@ Pane {
 
                     Text {
                         id: textHeaderHeater4
-                        text: "Tunable Coupler "
+                        text: "Tunable Coupler 0"
                         font.pixelSize: 18
-                    }
-
-                    TextInput {
-                        id: textIHS4
-                        text: "0"
-                        font.pixelSize: 18
-                        selectByMouse: true
                     }
                 }
 
                 Row {
                     id: rowHeater4
-                    height: columnHeater1.height - textHeaderHeater1.height - colSetGetHeater1.height - switchAh.height - 3*columnHeater1.spacing
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    height: columnHeater4.height - textHeaderHeater4.height - colSetGetHeater4.height - 2*columnHeater4.spacing
+                    visible: pageCntrlPnl.height < 250 ? false : true
 
                     Gauge {
                         id: gaugeHeater4
                         height: parent.height
                         antialiasing: true
-                        value: 0
-                        minimumValue: 0
-                        maximumValue: 15
                         tickmarkStepSize: 1
+                        minimumValue: 0
+                        value: sliderHeater4.value
                         minorTickmarkCount: 1
+                        maximumValue: 14
                         Behavior on value { NumberAnimation { duration: 100 } }
                     }
 
@@ -478,41 +428,15 @@ Pane {
                         id: sliderHeater4
                         height: parent.height
                         antialiasing: true
-                        wheelEnabled: true
                         stepSize: 0.01
-                        to: 14.5
-                        orientation: Qt.Vertical
+                        wheelEnabled: true
                         value: 0
-
+                        orientation: Qt.Vertical
+                        to: 14
                         onValueChanged: {
-                            if (switchAh2.checked) {
-                                timerAh2.restart()
-                            }
-                            gaugeHeater4.value = backend.drvD(parseInt(textIHS4.text), value.toFixed(3)).slice(2)
-                        }
-
-                        Timer {
-                            id: timerAh2
-                            interval: 100; running: false; repeat: true
-                            property int t_coun: 0
-                            onTriggered: {
-                                gaugeHeater4.value = backend.drvD(parseInt(textIHS4.text), ((sliderHeater4.value**2+(3-t_coun)*10)**0.5).toFixed(3)).slice(2)
-                                t_coun++
-                                if(t_coun > 3) {
-                                    stop()
-                                    t_coun = 0
-                                    interval = 100
-                                } else if(t_coun > 2) {
-                                    interval = 500
-                                }
-                            }
+                            gaugeHeater4.value = backend.drvD(0, value.toFixed(2)).slice(2)
                         }
                     }
-                }
-
-                Switch {
-                    id: switchAh2
-                    text: "Anti-Hyst."
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
 
@@ -520,27 +444,22 @@ Pane {
                     id: colSetGetHeater4
                     width: parent.width
                     height: 41
-
                     Row {
                         id: rowSetHeater4
-                        anchors.horizontalCenter: parent.horizontalCenter
-
+                        anchors.left: parent.left
                         Text {
                             id: textSetHeater4
                             text: "Set: "
                             anchors.verticalCenter: parent.verticalCenter
                             font.pixelSize: 18
-                            minimumPixelSize: 15
                         }
 
                         TextInput {
                             id: textEditSetHeater4
-                            text: sliderHeater4.value.toFixed(3)
-                            anchors.verticalCenter: parent.verticalCenter
+                            text: sliderHeater4.value.toFixed(2)
                             font.pixelSize: 18
-                            cursorVisible: true
                             selectByMouse: true
-                            validator: DoubleValidator{ locale: ""; top: 14.5; bottom: 0;}
+                            validator: DoubleValidator{ locale: ""; bottom: 0; top: 12;}
                             onAccepted: {
                                 sliderHeater4.value = text
                             }
@@ -557,139 +476,29 @@ Pane {
                                         if (curs > 2) {
                                             sliderHeater4.value += 1
                                         } else {
-                                            sliderHeater4.value += (10**curs)/1000
+                                            sliderHeater4.value += (10**(curs+1))/1000
                                         }
 
                                     } else {
                                         if (curs > 2) {
                                             sliderHeater4.value -= 1
                                         } else {
-                                            sliderHeater4.value -= (10**curs)/1000
+                                            sliderHeater4.value -= (10**(curs+1))/1000
                                         }
                                     }
                                     textEditSetHeater4.cursorPosition = textEditSetHeater4.text.length - curs
                                 }
                             }
                         }
+                        anchors.leftMargin: 40
                     }
 
                     Row {
                         id: rowGetHeater4
                         anchors.left: rowSetHeater4.left
-
                         Text {
                             id: textGetHeater4
-                            text: "Get: " + gaugeHeater4.value.toFixed(3) + " V"
-                            font.pixelSize: 18
-                            minimumPixelSize: 15
-                        }
-                    }
-                }
-
-
-            }
-        }
-
-        Frame {
-            id: frameWl
-            width: 160
-            height: parent.height
-            visible: false
-            enabled: true
-            Column {
-                id: columnWl
-                anchors.fill: parent
-                Text {
-                    id: textHeaderWl
-                    text: "Wavelength"
-                    font.pixelSize: 18
-                    anchors.horizontalCenter: parent.horizontalCenter
-                }
-
-                Row {
-                    id: rowWl
-                    height: columnWl.height - textHeaderWl.height - colSetGetWl.height - 2*columnWl.spacing
-                    anchors.horizontalCenter: parent.horizontalCenter
-
-                    Gauge {
-                        id: gaugeWl
-                        height: parent.height
-                        antialiasing: true
-                        minorTickmarkCount: 3
-                        value: 0
-                        maximumValue: 1600
-                        minimumValue: 1500
-                        tickmarkStepSize: (maximumValue - minimumValue)/10
-                        Behavior on value { NumberAnimation { duration: 100 } }
-                        style: GaugeStyle {
-                            tickmarkLabel: Text {
-                                text: control.formatValue(styleData.value.toFixed(0))
-                                font: control.font
-                                color: "#c8c8c8"
-                                antialiasing: true
-                            }
-                        }
-                    }
-
-                    Slider {
-                        id: sliderWl
-                        height: parent.height
-                        enabled: false
-                        antialiasing: true
-                        wheelEnabled: true
-                        orientation: Qt.Vertical
-                        from: 0
-                        to: 10
-                        stepSize: 1
-                        value: 0
-
-                        property var config: []
-
-                        onValueChanged: {
-                            config = backend.setConfig(value)
-
-                            textEditSetWl.text = config[4].toFixed(3)
-
-                            sliderHeater3.value === config[2] ? sliderHeater3.valueChanged() : sliderHeater3.value = config[2]
-                            sliderHeater2.value === config[1] ? sliderHeater2.valueChanged() : sliderHeater2.value = config[1]
-                            sliderHeater4.value === config[3] ? sliderHeater4.valueChanged() : sliderHeater4.value = config[3]
-                            sliderHeater1.value === config[0] ? sliderHeater1.valueChanged() : sliderHeater1.value = config[0]
-                        }
-                    }
-                }
-
-                Column {
-                    id: colSetGetWl
-                    width: parent.width
-                    height: 41
-                    Row {
-                        id: rowSetWl
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        Text {
-                            id: textSetWl
-                            text: "Set: "
-                            anchors.verticalCenter: parent.verticalCenter
-                            font.pixelSize: 18
-                        }
-
-                        TextInput {
-                            id: textEditSetWl
-                            text: "0.000"
-                            font.pixelSize: 18
-                            onAccepted: {
-                                sliderWl.value = backend.findWl(text)
-                            }
-                            validator: DoubleValidator{ locale: ""; bottom: 1500; top: 1600;}
-                            selectByMouse: true
-                        }
-                    }
-
-                    Row {
-                        id: rowGetWl
-                        anchors.left: rowSetWl.left
-                        Text {
-                            id: textGetWl
-                            text: "Get: -- nm"
+                            text: "Get: " + gaugeHeater4.value.toFixed(2) + " V"
                             font.pixelSize: 18
                         }
                     }
@@ -699,89 +508,146 @@ Pane {
         }
 
         Frame {
-            id: frameSimple
-            width: 800 + 4*rowCntrlPnl.spacing
+            id: frameTec
+            width: 160
             height: parent.height
 
             Column {
-                id: columnWlS
+                id: columnTec
                 anchors.fill: parent
-                padding: 20
 
-                Text {
-                    id: textHeaderWlS
-                    text: "Wavelength"
-                    font.pixelSize: 22
+                Row {
+                    id: row5
                     anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 20
+
+                    Text {
+                        id: textHeaderTec
+                        text: "TEC "
+                        font.pixelSize: 18
+                    }
+
+                    Button {
+                        id: configTec
+                        height: 22
+                        text: "\u2699"
+                        leftPadding: 0
+                        antialiasing: true
+                        rightPadding: 0
+                        font.pointSize: 20
+                        background: Rectangle {}
+                        onClicked: popupPid.open()
+                        visible: true
+                    }
                 }
 
                 Row {
-                    id: row
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    id: rowTec
+                    height: columnTec.height - textHeaderTec.height - colSetGetTec.height - 2*columnTec.spacing
+                    visible: pageCntrlPnl.height < 250 ? false : true
 
-                    TextInput {
-                        id: textEditSetWlS
-                        text: textEditSetWl.text
-                        font.pixelSize: 100
-                        bottomPadding: 80
-                        topPadding: 80
-                        onAccepted: {
-                            sliderWlS.value = backend.findWl(text)
-                        }
-                        validator: DoubleValidator{ locale: ""; bottom: 1500; top: 1600;}
-                        selectByMouse: true
-                    }
+                    Gauge {
+                        id: gaugeTec
+                        height: parent.height
+                        antialiasing: true
+                        tickmarkStepSize: 1
+                        minimumValue: 15
+                        value: -1
+                        minorTickmarkCount: 1
+                        maximumValue: 30
+                        Behavior on value { NumberAnimation { duration: 100 } }
 
-                    Text {
-                        id: text1
-                        text: qsTr(" nm")
-                        font.pixelSize: 100
-                        verticalAlignment: Text.AlignTop
-                        bottomPadding: 80
-                        topPadding: 80
-                    }
-                }
-
-
-                Slider {
-                    id: sliderWlS
-                    width: parent.width
-                    antialiasing: true
-                    wheelEnabled: true
-                    enabled: sliderWl.enabled
-                    stepSize: 1
-                    to: sliderWl.to
-                    from: 0
-                    value: sliderWl.value
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    onValueChanged: sliderWl.value = value
-                }
-
-                Gauge {
-                    id: gaugeWlS
-                    width: parent.width
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    antialiasing: true
-                    minorTickmarkCount: 3
-                    value: 0
-                    maximumValue: gaugeWl.maximumValue
-                    minimumValue: gaugeWl.minimumValue
-                    tickmarkStepSize: (maximumValue - minimumValue)/10
-                    orientation: Qt.Horizontal
-                    Behavior on value { NumberAnimation { duration: 100 } }
-                    style: GaugeStyle {
-                        tickmarkLabel: Text {
-                            text: control.formatValue(styleData.value.toFixed(0))
-                            font: control.font
-                            color: "#c8c8c8"
-                            antialiasing: true
+                        Timer {
+                            id: timerTemp
+                            interval: 1000; repeat: true; running: switch3.checked
+                            onTriggered: {
+                                gaugeTec.value = backend.tecTemp().slice(2)
+                            }
                         }
                     }
+
+                    Slider {
+                        id: sliderTec
+                        height: parent.height
+                        antialiasing: true
+                        stepSize: 0.01
+                        wheelEnabled: true
+                        value: 21
+                        orientation: Qt.Vertical
+                        to: 30
+                        from: 15
+                        onValueChanged: {
+                            backend.tecTemp(value.toFixed(2)).slice(2)
+                        }
+                    }
+                    anchors.horizontalCenter: parent.horizontalCenter
                 }
 
+                Column {
+                    id: colSetGetTec
+                    width: parent.width
+                    height: 41
+                    Row {
+                        id: rowSetTec
+                        anchors.left: parent.left
+                        Text {
+                            id: textSetTec
+                            text: "Set: "
+                            anchors.verticalCenter: parent.verticalCenter
+                            font.pixelSize: 18
+                        }
+
+                        TextInput {
+                            id: textEditSetTec
+                            text: sliderTec.value.toFixed(2)
+                            font.pixelSize: 18
+                            selectByMouse: true
+                            validator: DoubleValidator{ locale: ""; bottom: 15; top: 30;}
+                            onAccepted: {
+                                sliderTec.value = text
+                            }
+
+                            MouseArea {
+                                id: mouseAreaPrecisionTec
+                                anchors.fill: parent
+                                cursorShape: Qt.IBeamCursor
+                                onPressed: function(mouse) { mouse.accepted = false }
+                                onWheel: {
+                                    var oldCurs = textEditSetTec.cursorPosition
+                                    var curs = textEditSetTec.text.length - oldCurs
+                                    if (wheel.angleDelta.y > 0) {
+                                        if (curs > 2) {
+                                            sliderTec.value += 1
+                                        } else {
+                                            sliderTec.value += (10**(curs+1))/1000
+                                        }
+
+                                    } else {
+                                        if (curs > 2) {
+                                            sliderTec.value -= 1
+                                        } else {
+                                            sliderTec.value -= (10**(curs+1))/1000
+                                        }
+                                    }
+                                    textEditSetTec.cursorPosition = textEditSetTec.text.length - curs
+                                }
+                            }
+                        }
+                        anchors.leftMargin: 40
+                    }
+
+                    Row {
+                        id: rowGetTec
+                        anchors.left: rowSetTec.left
+                        Text {
+                            id: textGetTec
+                            text: "Get: " + gaugeTec.value.toFixed(2) + " °C"
+                            font.pixelSize: 18
+                        }
+                    }
+                }
+                spacing: 15
             }
-
-
         }
 
         Frame {
@@ -801,15 +667,17 @@ Pane {
                 Row {
                     id: rowCurrent
                     height: columnCurrent.height - textCurrent.height - colSetGetCurrent.height - 2*columnCurrent.spacing
+                    visible: pageCntrlPnl.height < 250 ? false : true
+
                     Gauge {
                         id: gaugeCurrent
                         height: parent.height
                         antialiasing: true
                         tickmarkStepSize: 50
                         minimumValue: 0
-                        value: sliderCurrent.value
+                        value: 0
                         minorTickmarkCount: 3
-                        maximumValue: sliderCurrent.to
+                        maximumValue: 250
                         Behavior on value { NumberAnimation { duration: 100 } }
                     }
 
@@ -818,10 +686,10 @@ Pane {
                         height: parent.height
                         antialiasing: true
                         value: 0
-                        stepSize: 10
+                        stepSize: 0.01
                         wheelEnabled: true
                         orientation: Qt.Vertical
-                        to: 300
+                        to: 250
                         onValueChanged: {
                             gaugeCurrent.value = backend.lsrIlev(value.toFixed(2)).slice(2)
                         }
@@ -835,7 +703,7 @@ Pane {
                     height: 41
                     Row {
                         id: rowSetCurrent
-                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.left: parent.left
                         Text {
                             id: textSetCurrent
                             text: "Set: "
@@ -850,11 +718,39 @@ Pane {
                             anchors.verticalCenter: parent.verticalCenter
                             font.pixelSize: 18
                             selectByMouse: true
-                            validator: DoubleValidator{ locale: ""; bottom: 0; top: 300;}
+                            validator: DoubleValidator{ locale: ""; bottom: 0; top: 250;}
                             onAccepted: {
                                 sliderCurrent.value = text
                             }
+
+                            MouseArea {
+                                id: mouseAreaPrecisionCur
+                                anchors.fill: parent
+                                cursorShape: Qt.IBeamCursor
+                                onPressed: function(mouse) { mouse.accepted = false }
+                                onWheel: {
+                                    var oldCurs = textEditSetCurrent.cursorPosition
+                                    var curs = textEditSetCurrent.text.length - oldCurs
+                                    if (wheel.angleDelta.y > 0) {
+                                        if (curs > 2) {
+                                            sliderCurrent.value += (10**(curs))/1000
+                                        } else {
+                                            sliderCurrent.value += (10**(curs+1))/1000
+                                        }
+
+                                    } else {
+                                        if (curs > 2) {
+                                            sliderCurrent.value -= (10**(curs))/1000
+                                        } else {
+                                            sliderCurrent.value -= (10**(curs+1))/1000
+                                        }
+                                    }
+                                    textEditSetCurrent.cursorPosition = textEditSetCurrent.text.length - curs
+                                }
+                            }
                         }
+
+                        anchors.leftMargin: 40
                     }
 
                     Row {
@@ -877,11 +773,12 @@ Pane {
             id: frameSw
             width: 244
             height: parent.height
+            clip: true
 
             Column {
                 id: columnSw
                 anchors.fill: parent
-                spacing: 5
+                spacing: 15
 
                 Image {
                     id: image
@@ -893,6 +790,7 @@ Pane {
 
                 Row {
                     id: rowSwStat
+                    visible: pageCntrlPnl.height < 250 ? false : true
 
                     StatusIndicator {
                         id: statusIndicator
@@ -905,6 +803,7 @@ Pane {
                         id: switchBoost
                         text: qsTr("Boost Cnvrtr")
                         anchors.verticalCenter: parent.verticalCenter
+                        enabled: false
                         onToggled: {
                             backend.drvStat(checked+0)
                             button2.clicked()
@@ -915,6 +814,8 @@ Pane {
 
                 Row {
                     id: rowSwStat1
+                    visible: pageCntrlPnl.height < 250 ? false : true
+
                     StatusIndicator {
                         id: statusIndicator1
                         anchors.verticalCenter: parent.verticalCenter
@@ -926,6 +827,7 @@ Pane {
                         id: switch2
                         text: qsTr("Current")
                         anchors.verticalCenter: parent.verticalCenter
+                        enabled: false
                         onToggled: {
                             backend.lsrStat(checked+0)
                             button2.clicked()
@@ -948,41 +850,59 @@ Pane {
                         text: qsTr("System")
                         anchors.verticalCenter: parent.verticalCenter
                         onToggled: {
-                            backend.systStat(checked+0)
-                            button2.clicked()
+                            pageCntrlPnl.enabled = false
+                            busyIndicator.running = true
+                            offOnTimer.start()
+                        }
+
+                        Timer {
+                            id: offOnTimer
+                            interval: 500; running: false; repeat: true;
+                            property int cFunc: 0
+                            onTriggered: {
+                                if(switch3.checked) {
+
+                                    if(cFunc == 0) {
+                                        backend.systStat(switch3.checked+0)
+                                        button2.clicked()
+                                        cFunc++
+                                    } else if(cFunc == 1) {
+                                        switch2.toggle()
+                                        switch2.toggled()
+                                        cFunc++
+                                    } else if(cFunc == 2) {
+                                        switchBoost.toggle()
+                                        switchBoost.toggled()
+                                        offOnTimer.stop()
+                                        busyIndicator.running = false
+                                        pageCntrlPnl.enabled = true
+                                    }
+                                } else {
+                                    if(cFunc == 2) {
+                                        switchBoost.toggle()
+                                        switchBoost.toggled()
+                                        cFunc--
+                                    } else if(cFunc == 1) {
+                                        switch2.toggle()
+                                        switch2.toggled()
+                                        cFunc--
+                                    } else if(cFunc == 0) {
+                                        backend.systStat(switch3.checked+0)
+                                        button2.clicked()
+                                        offOnTimer.stop()
+                                        busyIndicator.running = false
+                                        pageCntrlPnl.enabled = true
+                                    }
+                                }
+                            }
                         }
                     }
                 }
-
-                Row {
-                    id: rowSwStat3
-                    StatusIndicator {
-                        id: statusIndicator3
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.bottom: parent.bottom
-                        active: switch4.checked
-                    }
-
-                    Switch {
-                        id: switch4
-                        text: qsTr("Pro")
-                        anchors.verticalCenter: parent.verticalCenter
-                        onToggled: {
-                            frameHeater1.visible = switch4.checked
-                            frameHeater2.visible = switch4.checked
-                            frameHeater3.visible = switch4.checked
-                            frameHeater4.visible = switch4.checked
-                            frameWl.visible = switch4.checked
-
-                            frameSimple.visible = !switch4.checked
-                        }
-                    }
-                }
-
 
                 ComboBox {
                     id: comboBox
                     width: parent.width
+                    visible: pageCntrlPnl.height < 250 ? false : true
                     model: ["Select COM"]
                     popup.onVisibleChanged: {
                         if(popup.visible) {
@@ -990,10 +910,11 @@ Pane {
                         }
                     }
                     onActivated: {
-                        backend.openPort(currentIndex)
-                        backend.rst()
+                        pageCntrlPnl.enabled = false
                         busyIndicator.running = true
                         rstWait.start()
+                        backend.openPort(currentIndex)
+                        backend.rst()
 
                     }
 
@@ -1001,8 +922,9 @@ Pane {
                         id: rstWait
                         interval: 2000; running: false; repeat: false
                         onTriggered: {
-                            busyIndicator.running = false
                             pageCntrlPnl.idn = backend.idn()
+                            busyIndicator.running = false
+                            pageCntrlPnl.enabled = true
                         }
                     }
                 }
@@ -1012,6 +934,7 @@ Pane {
                     width: parent.width
                     text: qsTr("System Reset")
                     enabled: false
+                    visible: false
                     onClicked: {
                         backend.rst()
                         button2.clicked()
@@ -1023,6 +946,7 @@ Pane {
                     width: parent.width
                     text: qsTr("Get Values")
                     enabled: false
+                    visible: false
                     onClicked: {
                         sliderHeater1.value = backend.drvD(0).slice(2)
                         sliderHeater2.value = backend.drvD(3).slice(2)
@@ -1037,6 +961,7 @@ Pane {
                 Button {
                     id: button
                     width: parent.width
+                    visible: pageCntrlPnl.height < 250 ? false : true
                     text: qsTr("Load Settings")
                     enabled: true
                     onClicked: fileDialog.open()
@@ -1050,23 +975,240 @@ Pane {
 
                     property var specs: []
                     onAccepted: {
+                        pageCntrlPnl.enabled = false
+                        busyIndicator.running = true
                         specs = backend.getSettings(fileUrl)
+                        preSet.cntr = fileDialog.specs[0].length-1
 
-                        sliderWl.to = specs[0]
-                        gaugeWl.minimumValue = Math.min(specs[1].toFixed(0), specs[2].toFixed(0))
-                        gaugeWl.maximumValue = Math.max(specs[1].toFixed(0), specs[2].toFixed(0))
-
-                        sliderWl.enabled = true
-                        lutOn = true
-
+                        preSet.restart()
                     }
                     onRejected: {
                         close()
                     }
                 }
+
+                Button {
+                    id: buttonSave
+                    width: parent.width
+                    visible: pageCntrlPnl.height < 250 ? false : true
+                    text: qsTr("Save")
+                    enabled: true
+                    onClicked: {
+                        backend.saveSettings([sliderHeater2.value,
+                                                     sliderHeater3.value,
+                                                     sliderHeater1.value,
+                                                     sliderHeater4.value,
+                                                     sliderTec.value,
+                                                     sliderCurrent.value])
+                        text = "Saved!"
+                        saved.restart()
+                    }
+                    Timer {
+                        id: saved
+                        interval: 1000; running: false; repeat: false;
+                        onTriggered: {
+                            parent.text = "Save"
+                        }
+                    }
+                }
             }
         }
     }
+
+    Popup {
+        id: popupPid
+        modal: true
+        focus: true
+        contentHeight: framePid.height
+        contentWidth: framePid.width
+        anchors.centerIn: Overlay.overlay
+        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
+        onAboutToShow: {
+            textGetP.text = "Get P: " + backend.setP()
+            textGetI.text = "Get I: " + backend.setI()
+            textGetD.text = "Get D: " + backend.setD()
+            textGetILim.text = "Get Max Current: " + backend.iMax()
+        }
+
+        ScrollView {
+            anchors.fill: parent
+            contentHeight: framePid.height
+            contentWidth: framePid.width
+            wheelEnabled: true
+
+        Frame {
+            id: framePid
+            width: 230
+            height: 400
+            clip: true
+
+            WheelEditInput {
+                id: weiPid
+            }
+
+            Column {
+                id: columnPid
+                anchors.fill: parent
+                spacing: 20
+
+                Text {
+                    id: textHeaderPid
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "Config."
+                    font.pixelSize: 18
+                }
+
+                Row {
+                    id: rowSetP
+                    anchors.left: parent.left
+                    anchors.leftMargin: 15
+                    Text {
+                        id: textSetP
+                        text: "Set P: "
+                        anchors.verticalCenter: parent.verticalCenter
+                        font.pixelSize: 18
+                    }
+
+                    TextInput {
+                        id: textEditSetP
+                        text: "0"
+                        font.pixelSize: 18
+                        selectByMouse: true
+                        validator: DoubleValidator{ locale: ""; bottom: 0; top: 10;}
+                        onAccepted: {
+                            textGetP.text = "Get P: " + backend.setP(text)
+                            colorA.restart()
+                        }
+
+                        ColorAnimation on color { id: colorA; running: false; from: "#41cd52"; to: "#000000"; duration: 1500}
+                    }
+                }
+
+                Row {
+                    id: rowGetP
+                    anchors.left: parent.left
+                    anchors.leftMargin: 15
+                    Text {
+                        id: textGetP
+                        text: "Get P: 0"
+                        font.pixelSize: 18
+                    }
+                }
+
+                Row {
+                    id: rowSetI
+                    anchors.left: parent.left
+                    anchors.leftMargin: 15
+                    Text {
+                        id: textSetI
+                        text: "Set I: "
+                        anchors.verticalCenter: parent.verticalCenter
+                        font.pixelSize: 18
+                    }
+
+                    TextInput {
+                        id: textEditSetI
+                        text: "0"
+                        font.pixelSize: 18
+                        selectByMouse: true
+                        validator: DoubleValidator{ locale: ""; bottom: 0; top: 10;}
+                        onAccepted: {
+                            textGetI.text = "Get I: " + backend.setI(text)
+                            colorB.restart()
+                        }
+
+                        ColorAnimation on color { id: colorB; running: false; from: "#41cd52"; to: "#000000"; duration: 1500}
+                    }
+                }
+
+                Row {
+                    id: rowGetI
+                    anchors.left: parent.left
+                    anchors.leftMargin: 15
+                    Text {
+                        id: textGetI
+                        text: "Get I: 0"
+                        font.pixelSize: 18
+                    }
+                }
+
+                Row {
+                    id: rowSetD
+                    anchors.left: parent.left
+                    anchors.leftMargin: 15
+                    Text {
+                        id: textSetD
+                        text: "Set D: "
+                        anchors.verticalCenter: parent.verticalCenter
+                        font.pixelSize: 18
+                    }
+
+                    TextInput {
+                        id: textEditSetD
+                        text: "0"
+                        font.pixelSize: 18
+                        selectByMouse: true
+                        validator: DoubleValidator{ locale: ""; bottom: 0; top: 10;}
+                        onAccepted: {
+                            textGetD.text = "Get D: " + backend.setD(text)
+                            colorC.restart()
+                        }
+
+                        ColorAnimation on color { id: colorC; running: false; from: "#41cd52"; to: "#000000"; duration: 1500}
+                    }
+                }
+
+                Row {
+                    id: rowGetD
+                    anchors.left: parent.left
+                    anchors.leftMargin: 15
+                    Text {
+                        id: textGetD
+                        text: "Get D: 0"
+                        font.pixelSize: 18
+                    }
+                }
+
+                Row {
+                    id: rowSetILim
+                    anchors.left: parent.left
+                    anchors.leftMargin: 15
+                    Text {
+                        id: textSetILim
+                        text: "Set Max Current: "
+                        anchors.verticalCenter: parent.verticalCenter
+                        font.pixelSize: 18
+                    }
+
+                    TextInput {
+                        id: textEditSetILim
+                        text: "0"
+                        font.pixelSize: 18
+                        selectByMouse: true
+                        validator: DoubleValidator{ locale: ""; bottom: 0; top: 10;}
+                        onAccepted: {
+                            textGetILim.text = "Get Max Current: " + backend.iMax(text)
+                            colorD.restart()
+                        }
+
+                        ColorAnimation on color { id: colorD; running: false; from: "#41cd52"; to: "#000000"; duration: 1500}
+                    }
+                }
+
+                Row {
+                    id: rowGetILim
+                    anchors.left: parent.left
+                    anchors.leftMargin: 15
+                    Text {
+                        id: textGetILim
+                        text: "Get Max Current: 0"
+                        font.pixelSize: 18
+                    }
+                }
+            }
+        }
+    } }
 
     BusyIndicator {
         id: busyIndicator
@@ -1076,8 +1218,26 @@ Pane {
         anchors.horizontalCenter: parent.horizontalCenter
     }
 
-    function setWl(wl) {
-        sliderWl.value = backend.findWl(wl)
+    Timer {
+        id: preSet
+        interval: 2000; running: false; repeat: true; triggeredOnStart: true;
+        property int cntr: 3
+        onTriggered: {
+            sliderHeater2.value = fileDialog.specs[1][cntr]
+            sliderHeater3.value = fileDialog.specs[2][cntr]
+            sliderHeater1.value = fileDialog.specs[3][cntr]
+            sliderHeater4.value = fileDialog.specs[0][cntr]
+            sliderTec.value = fileDialog.specs[4][cntr]
+            sliderCurrent.value = fileDialog.specs[5][cntr]
+            cntr--
+
+            if(cntr == 0) {
+                preSet.stop()
+                cntr = fileDialog.specs[0].length-1
+                busyIndicator.running = false
+                pageCntrlPnl.enabled = true
+            }
+        }
     }
 }
 
