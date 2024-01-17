@@ -7,6 +7,7 @@ Laser Tunning Software
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Older Versions](#older-versions)
 
 ## Prerequisites
 
@@ -19,3 +20,7 @@ Laser Tunning Software
 ## Usage
 
 * `python main.py`
+
+## Older Versions
+
+Check the other branches.
