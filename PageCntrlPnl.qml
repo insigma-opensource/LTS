@@ -16,13 +16,12 @@ Pane {
         id: rowCntrlPnl
         width: parent.width
         height: parent.height
-        spacing: (width - 6*frameHeater1.width - frameSw.width)/6
+        spacing: (width - 7*frameHeater1.width - frameCurrent.width - frameSw.width)/8
 
         Frame {
             id: frameHeater1
-            width: 160
+            width: 130
             height: parent.height
-            visible: false
 
             Column {
                 id: columnHeater1
@@ -35,13 +34,13 @@ Pane {
 
                     Text {
                         id: textHeaderHeater1
-                        text: "Phase "
+                        text: "Heater "
                         font.pixelSize: 18
                     }
 
                     TextInput {
                         id: textIHS1
-                        text: "5"
+                        text: "0"
                         font.pixelSize: 18
                         selectByMouse: true
                     }
@@ -58,7 +57,7 @@ Pane {
                         antialiasing: true
                         value: 0
                         minimumValue: 0
-                        maximumValue: 15
+                        maximumValue: 14
                         tickmarkStepSize: 1
                         minorTickmarkCount: 1
                         Behavior on value { NumberAnimation { duration: 100 } }
@@ -70,7 +69,7 @@ Pane {
                         antialiasing: true
                         wheelEnabled: true
                         stepSize: 0.01
-                        to: 14.5
+                        to: 14
                         orientation: Qt.Vertical
                         value: 0
                         onValueChanged: {
@@ -130,7 +129,7 @@ Pane {
                             font.pixelSize: 18
                             cursorVisible: true
                             selectByMouse: true
-                            validator: DoubleValidator{ locale: ""; top: 14.5; bottom: 0;}
+                            validator: DoubleValidator{ locale: ""; top: 14; bottom: 0;}
                             onAccepted: {
                                 sliderHeater1.value = text
                             }
@@ -180,9 +179,9 @@ Pane {
 
         Frame {
             id: frameHeater2
-            width: 160
+            width: 130
             height: parent.height
-            visible: false
+
             Column {
                 id: columnHeater2
                 anchors.fill: parent
@@ -193,13 +192,13 @@ Pane {
 
                     Text {
                         id: textHeaderHeater2
-                        text: "Large Ring "
+                        text: "Heater "
                         font.pixelSize: 18
                     }
 
                     TextInput {
                         id: textIHS2
-                        text: "3"
+                        text: "1"
                         font.pixelSize: 18
                         selectByMouse: true
                     }
@@ -217,7 +216,7 @@ Pane {
                         minimumValue: 0
                         value: sliderHeater2.value
                         minorTickmarkCount: 1
-                        maximumValue: 15
+                        maximumValue: 14
                         Behavior on value { NumberAnimation { duration: 100 } }
                     }
 
@@ -229,7 +228,7 @@ Pane {
                         wheelEnabled: true
                         value: 0
                         orientation: Qt.Vertical
-                        to: 14.5
+                        to: 14
                         onValueChanged: {
                             gaugeHeater2.value = backend.drvD(parseInt(textIHS2.text), value.toFixed(3)).slice(2)
                         }
@@ -256,7 +255,7 @@ Pane {
                             text: sliderHeater2.value.toFixed(3)
                             font.pixelSize: 18
                             selectByMouse: true
-                            validator: DoubleValidator{ locale: ""; bottom: 0; top: 14.5;}
+                            validator: DoubleValidator{ locale: ""; bottom: 0; top: 14;}
                             onAccepted: {
                                 sliderHeater2.value = text
                             }
@@ -305,9 +304,9 @@ Pane {
 
         Frame {
             id: frameHeater3
-            width: 160
+            width: 130
             height: parent.height
-            visible: false
+
             Column {
                 id: columnHeater3
                 anchors.fill: parent
@@ -318,13 +317,13 @@ Pane {
 
                     Text {
                         id: textHeaderHeater3
-                        text: "Small Ring "
+                        text: "Heater "
                         font.pixelSize: 18
                     }
 
                     TextInput {
                         id: textIHS3
-                        text: "4"
+                        text: "2"
                         font.pixelSize: 18
                         selectByMouse: true
                     }
@@ -342,7 +341,7 @@ Pane {
                         minimumValue: 0
                         value: sliderHeater3.value
                         minorTickmarkCount: 1
-                        maximumValue: 15
+                        maximumValue: 14
                         Behavior on value { NumberAnimation { duration: 100 } }
                     }
 
@@ -354,7 +353,7 @@ Pane {
                         wheelEnabled: true
                         value: 0
                         orientation: Qt.Vertical
-                        to: 14.5
+                        to: 14
                         onValueChanged: {
                             gaugeHeater3.value = backend.drvD(parseInt(textIHS3.text), value.toFixed(3)).slice(2)
                         }
@@ -381,7 +380,7 @@ Pane {
                             text: sliderHeater3.value.toFixed(3)
                             font.pixelSize: 18
                             selectByMouse: true
-                            validator: DoubleValidator{ locale: ""; bottom: 0; top: 14.5;}
+                            validator: DoubleValidator{ locale: ""; bottom: 0; top: 14;}
                             onAccepted: {
                                 sliderHeater3.value = text
                             }
@@ -430,9 +429,8 @@ Pane {
 
         Frame {
             id: frameHeater4
-            width: 160
+            width: 130
             height: parent.height
-            visible: false
 
             Column {
                 id: columnHeater4
@@ -445,13 +443,13 @@ Pane {
 
                     Text {
                         id: textHeaderHeater4
-                        text: "Tunable Coupler "
+                        text: "Heater "
                         font.pixelSize: 18
                     }
 
                     TextInput {
                         id: textIHS4
-                        text: "0"
+                        text: "3"
                         font.pixelSize: 18
                         selectByMouse: true
                     }
@@ -468,7 +466,7 @@ Pane {
                         antialiasing: true
                         value: 0
                         minimumValue: 0
-                        maximumValue: 15
+                        maximumValue: 14
                         tickmarkStepSize: 1
                         minorTickmarkCount: 1
                         Behavior on value { NumberAnimation { duration: 100 } }
@@ -480,7 +478,7 @@ Pane {
                         antialiasing: true
                         wheelEnabled: true
                         stepSize: 0.01
-                        to: 14.5
+                        to: 14
                         orientation: Qt.Vertical
                         value: 0
 
@@ -540,7 +538,7 @@ Pane {
                             font.pixelSize: 18
                             cursorVisible: true
                             selectByMouse: true
-                            validator: DoubleValidator{ locale: ""; top: 14.5; bottom: 0;}
+                            validator: DoubleValidator{ locale: ""; top: 14; bottom: 0;}
                             onAccepted: {
                                 sliderHeater4.value = text
                             }
@@ -591,10 +589,260 @@ Pane {
         }
 
         Frame {
-            id: frameWl
-            width: 160
+            id: frameHeater5
+            width: 130
             height: parent.height
-            visible: false
+
+            Column {
+                id: columnHeater5
+                anchors.fill: parent
+
+                Row {
+                    id: row5
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    Text {
+                        id: textHeaderHeater5
+                        text: "Heater "
+                        font.pixelSize: 18
+                    }
+
+                    TextInput {
+                        id: textIHS5
+                        text: "4"
+                        font.pixelSize: 18
+                        selectByMouse: true
+                    }
+
+                }
+
+                Row {
+                    id: rowHeater5
+                    height: columnHeater5.height - textHeaderHeater5.height - colSetGetHeater5.height - 2*columnHeater5.spacing
+                    Gauge {
+                        id: gaugeHeater5
+                        height: parent.height
+                        antialiasing: true
+                        tickmarkStepSize: 1
+                        minimumValue: 0
+                        value: sliderHeater5.value
+                        minorTickmarkCount: 1
+                        maximumValue: 14
+                        Behavior on value { NumberAnimation { duration: 100 } }
+                    }
+
+                    Slider {
+                        id: sliderHeater5
+                        height: parent.height
+                        antialiasing: true
+                        stepSize: 0.01
+                        wheelEnabled: true
+                        value: 0
+                        orientation: Qt.Vertical
+                        to: 14
+                        onValueChanged: {
+                            gaugeHeater5.value = backend.drvD(parseInt(textIHS5.text), value.toFixed(3)).slice(2)
+                        }
+                    }
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+
+                Column {
+                    id: colSetGetHeater5
+                    width: parent.width
+                    height: 41
+                    Row {
+                        id: rowSetHeater5
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        Text {
+                            id: textSetHeater5
+                            text: "Set: "
+                            anchors.verticalCenter: parent.verticalCenter
+                            font.pixelSize: 18
+                        }
+
+                        TextInput {
+                            id: textEditSetHeater5
+                            text: sliderHeater5.value.toFixed(3)
+                            font.pixelSize: 18
+                            selectByMouse: true
+                            validator: DoubleValidator{ locale: ""; bottom: 0; top: 14;}
+                            onAccepted: {
+                                sliderHeater5.value = text
+                            }
+
+                            MouseArea {
+                                id: mouseAreaPrecisionH5
+                                anchors.fill: parent
+                                cursorShape: Qt.IBeamCursor
+                                onPressed: function(mouse) { mouse.accepted = false }
+                                onWheel: {
+                                    var oldCurs = textEditSetHeater5.cursorPosition
+                                    var curs = textEditSetHeater5.text.length - oldCurs
+                                    if (wheel.angleDelta.y > 0) {
+                                        if (curs > 2) {
+                                            sliderHeater5.value += 1
+                                        } else {
+                                            sliderHeater5.value += (10**curs)/1000
+                                        }
+
+                                    } else {
+                                        if (curs > 2) {
+                                            sliderHeater5.value -= 1
+                                        } else {
+                                            sliderHeater5.value -= (10**curs)/1000
+                                        }
+                                    }
+                                    textEditSetHeater5.cursorPosition = textEditSetHeater5.text.length - curs
+                                }
+                            }
+                        }
+                    }
+
+                    Row {
+                        id: rowGetHeater5
+                        anchors.left: rowSetHeater5.left
+                        Text {
+                            id: textGetHeater5
+                            text: "Get: " + gaugeHeater5.value.toFixed(3) + " V"
+                            font.pixelSize: 18
+                        }
+                    }
+                }
+                spacing: 15
+            }
+        }
+
+        Frame {
+            id: frameHeater6
+            width: 130
+            height: parent.height
+
+            Column {
+                id: columnHeater6
+                anchors.fill: parent
+
+                Row {
+                    id: row6
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    Text {
+                        id: textHeaderHeater6
+                        text: "Heater "
+                        font.pixelSize: 18
+                    }
+
+                    TextInput {
+                        id: textIHS6
+                        text: "5"
+                        font.pixelSize: 18
+                        selectByMouse: true
+                    }
+
+                }
+
+                Row {
+                    id: rowHeater6
+                    height: columnHeater6.height - textHeaderHeater6.height - colSetGetHeater6.height - 2*columnHeater6.spacing
+                    Gauge {
+                        id: gaugeHeater6
+                        height: parent.height
+                        antialiasing: true
+                        tickmarkStepSize: 1
+                        minimumValue: 0
+                        value: sliderHeater6.value
+                        minorTickmarkCount: 1
+                        maximumValue: 14
+                        Behavior on value { NumberAnimation { duration: 100 } }
+                    }
+
+                    Slider {
+                        id: sliderHeater6
+                        height: parent.height
+                        antialiasing: true
+                        stepSize: 0.01
+                        wheelEnabled: true
+                        value: 0
+                        orientation: Qt.Vertical
+                        to: 14
+                        onValueChanged: {
+                            gaugeHeater6.value = backend.drvD(parseInt(textIHS6.text), value.toFixed(3)).slice(2)
+                        }
+                    }
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+
+                Column {
+                    id: colSetGetHeater6
+                    width: parent.width
+                    height: 41
+                    Row {
+                        id: rowSetHeater6
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        Text {
+                            id: textSetHeater6
+                            text: "Set: "
+                            anchors.verticalCenter: parent.verticalCenter
+                            font.pixelSize: 18
+                        }
+
+                        TextInput {
+                            id: textEditSetHeater6
+                            text: sliderHeater6.value.toFixed(3)
+                            font.pixelSize: 18
+                            selectByMouse: true
+                            validator: DoubleValidator{ locale: ""; bottom: 0; top: 14;}
+                            onAccepted: {
+                                sliderHeater6.value = text
+                            }
+
+                            MouseArea {
+                                id: mouseAreaPrecisionH6
+                                anchors.fill: parent
+                                cursorShape: Qt.IBeamCursor
+                                onPressed: function(mouse) { mouse.accepted = false }
+                                onWheel: {
+                                    var oldCurs = textEditSetHeater6.cursorPosition
+                                    var curs = textEditSetHeater6.text.length - oldCurs
+                                    if (wheel.angleDelta.y > 0) {
+                                        if (curs > 2) {
+                                            sliderHeater6.value += 1
+                                        } else {
+                                            sliderHeater6.value += (10**curs)/1000
+                                        }
+
+                                    } else {
+                                        if (curs > 2) {
+                                            sliderHeater6.value -= 1
+                                        } else {
+                                            sliderHeater6.value -= (10**curs)/1000
+                                        }
+                                    }
+                                    textEditSetHeater6.cursorPosition = textEditSetHeater6.text.length - curs
+                                }
+                            }
+                        }
+                    }
+
+                    Row {
+                        id: rowGetHeater6
+                        anchors.left: rowSetHeater6.left
+                        Text {
+                            id: textGetHeater6
+                            text: "Get: " + gaugeHeater6.value.toFixed(3) + " V"
+                            font.pixelSize: 18
+                        }
+                    }
+                }
+                spacing: 15
+            }
+        }
+
+        Frame {
+            id: frameWl
+            width: 130
+            height: parent.height
+
             enabled: true
             Column {
                 id: columnWl
@@ -699,94 +947,8 @@ Pane {
         }
 
         Frame {
-            id: frameSimple
-            width: 800 + 4*rowCntrlPnl.spacing
-            height: parent.height
-
-            Column {
-                id: columnWlS
-                anchors.fill: parent
-                padding: 20
-
-                Text {
-                    id: textHeaderWlS
-                    text: "Wavelength"
-                    font.pixelSize: 22
-                    anchors.horizontalCenter: parent.horizontalCenter
-                }
-
-                Row {
-                    id: row
-                    anchors.horizontalCenter: parent.horizontalCenter
-
-                    TextInput {
-                        id: textEditSetWlS
-                        text: textEditSetWl.text
-                        font.pixelSize: 100
-                        bottomPadding: 80
-                        topPadding: 80
-                        onAccepted: {
-                            sliderWlS.value = backend.findWl(text)
-                        }
-                        validator: DoubleValidator{ locale: ""; bottom: 1500; top: 1600;}
-                        selectByMouse: true
-                    }
-
-                    Text {
-                        id: text1
-                        text: qsTr(" nm")
-                        font.pixelSize: 100
-                        verticalAlignment: Text.AlignTop
-                        bottomPadding: 80
-                        topPadding: 80
-                    }
-                }
-
-
-                Slider {
-                    id: sliderWlS
-                    width: parent.width
-                    antialiasing: true
-                    wheelEnabled: true
-                    enabled: sliderWl.enabled
-                    stepSize: 1
-                    to: sliderWl.to
-                    from: 0
-                    value: sliderWl.value
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    onValueChanged: sliderWl.value = value
-                }
-
-                Gauge {
-                    id: gaugeWlS
-                    width: parent.width
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    antialiasing: true
-                    minorTickmarkCount: 3
-                    value: 0
-                    maximumValue: gaugeWl.maximumValue
-                    minimumValue: gaugeWl.minimumValue
-                    tickmarkStepSize: (maximumValue - minimumValue)/10
-                    orientation: Qt.Horizontal
-                    Behavior on value { NumberAnimation { duration: 100 } }
-                    style: GaugeStyle {
-                        tickmarkLabel: Text {
-                            text: control.formatValue(styleData.value.toFixed(0))
-                            font: control.font
-                            color: "#c8c8c8"
-                            antialiasing: true
-                        }
-                    }
-                }
-
-            }
-
-
-        }
-
-        Frame {
             id: frameCurrent
-            width: 160
+            width: 145
             height: parent.height
             Column {
                 id: columnCurrent
@@ -875,7 +1037,7 @@ Pane {
 
         Frame {
             id: frameSw
-            width: 244
+            width: 210
             height: parent.height
 
             Column {
@@ -953,32 +1115,6 @@ Pane {
                         }
                     }
                 }
-
-                Row {
-                    id: rowSwStat3
-                    StatusIndicator {
-                        id: statusIndicator3
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.bottom: parent.bottom
-                        active: switch4.checked
-                    }
-
-                    Switch {
-                        id: switch4
-                        text: qsTr("Pro")
-                        anchors.verticalCenter: parent.verticalCenter
-                        onToggled: {
-                            frameHeater1.visible = switch4.checked
-                            frameHeater2.visible = switch4.checked
-                            frameHeater3.visible = switch4.checked
-                            frameHeater4.visible = switch4.checked
-                            frameWl.visible = switch4.checked
-
-                            frameSimple.visible = !switch4.checked
-                        }
-                    }
-                }
-
 
                 ComboBox {
                     id: comboBox
@@ -1058,7 +1194,6 @@ Pane {
 
                         sliderWl.enabled = true
                         lutOn = true
-
                     }
                     onRejected: {
                         close()
