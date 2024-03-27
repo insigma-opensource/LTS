@@ -5,7 +5,6 @@ from serial.tools.list_ports import comports
 import numpy as np
 import time
 import threading
-import csv
 
 class pyLaser(QObject):
     def __init__(self):
@@ -127,22 +126,11 @@ class pyLaser(QObject):
 
     @Slot(QUrl, result=list)
     def getSettings(self, path):
-
         self.pathSettings = path.toLocalFile()
-
-        try:
-            with open(self.pathSettings, "r") as f:
-                dialect = csv.Sniffer().sniff(f.read())
-                f.seek(0)
-                reader = csv.reader(f, dialect)
-                self.settings = np.array(list(reader)).astype(float)
-
-            print(self.settings)
-            self.end=len(self.settings[:, 0]) - 1
-            return [self.end, float(self.settings[:, 4].min()), float(self.settings[:, 4].max())]
-        except Exception as e:
-            print("Non-standard lookup table - ", e)
-            return 0
+        self.settings = np.genfromtxt(path.toLocalFile(), delimiter=';')
+        print(self.settings)
+        self.end=len(self.settings[:, 0]) - 1
+        return [self.end, float(self.settings[:, 4].min()), float(self.settings[:, 4].max())]
 
     @Slot(int, result=list)
     def setConfig(self, index):
