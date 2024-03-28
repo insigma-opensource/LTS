@@ -12,6 +12,8 @@ Pane {
     property string idn: "Not connected"
     property bool lutOn: false
 
+    property var heater_max: 16
+
     Row {
         id: rowCntrlPnl
         width: parent.width
@@ -57,7 +59,7 @@ Pane {
                         antialiasing: true
                         value: 0
                         minimumValue: 0
-                        maximumValue: 14
+                        maximumValue: heater_max
                         tickmarkStepSize: 1
                         minorTickmarkCount: 1
                         Behavior on value { NumberAnimation { duration: 100 } }
@@ -69,7 +71,7 @@ Pane {
                         antialiasing: true
                         wheelEnabled: true
                         stepSize: 0.01
-                        to: 14
+                        to: heater_max
                         orientation: Qt.Vertical
                         value: 0
                         onValueChanged: {
@@ -129,7 +131,7 @@ Pane {
                             font.pixelSize: 18
                             cursorVisible: true
                             selectByMouse: true
-                            validator: DoubleValidator{ locale: ""; top: 14; bottom: 0;}
+                            validator: DoubleValidator{ locale: ""; top: heater_max; bottom: 0;}
                             onAccepted: {
                                 sliderHeater1.value = text
                             }
@@ -216,7 +218,7 @@ Pane {
                         minimumValue: 0
                         value: sliderHeater2.value
                         minorTickmarkCount: 1
-                        maximumValue: 14
+                        maximumValue: heater_max
                         Behavior on value { NumberAnimation { duration: 100 } }
                     }
 
@@ -228,7 +230,7 @@ Pane {
                         wheelEnabled: true
                         value: 0
                         orientation: Qt.Vertical
-                        to: 14
+                        to: heater_max
                         onValueChanged: {
                             gaugeHeater2.value = backend.drvD(parseInt(textIHS2.text), value.toFixed(3)).slice(2)
                         }
@@ -255,7 +257,7 @@ Pane {
                             text: sliderHeater2.value.toFixed(3)
                             font.pixelSize: 18
                             selectByMouse: true
-                            validator: DoubleValidator{ locale: ""; bottom: 0; top: 14;}
+                            validator: DoubleValidator{ locale: ""; bottom: 0; top: heater_max;}
                             onAccepted: {
                                 sliderHeater2.value = text
                             }
@@ -341,7 +343,7 @@ Pane {
                         minimumValue: 0
                         value: sliderHeater3.value
                         minorTickmarkCount: 1
-                        maximumValue: 14
+                        maximumValue: heater_max
                         Behavior on value { NumberAnimation { duration: 100 } }
                     }
 
@@ -353,7 +355,7 @@ Pane {
                         wheelEnabled: true
                         value: 0
                         orientation: Qt.Vertical
-                        to: 14
+                        to: heater_max
                         onValueChanged: {
                             gaugeHeater3.value = backend.drvD(parseInt(textIHS3.text), value.toFixed(3)).slice(2)
                         }
@@ -380,7 +382,7 @@ Pane {
                             text: sliderHeater3.value.toFixed(3)
                             font.pixelSize: 18
                             selectByMouse: true
-                            validator: DoubleValidator{ locale: ""; bottom: 0; top: 14;}
+                            validator: DoubleValidator{ locale: ""; bottom: 0; top: heater_max;}
                             onAccepted: {
                                 sliderHeater3.value = text
                             }
@@ -466,7 +468,7 @@ Pane {
                         antialiasing: true
                         value: 0
                         minimumValue: 0
-                        maximumValue: 14
+                        maximumValue: heater_max
                         tickmarkStepSize: 1
                         minorTickmarkCount: 1
                         Behavior on value { NumberAnimation { duration: 100 } }
@@ -478,7 +480,7 @@ Pane {
                         antialiasing: true
                         wheelEnabled: true
                         stepSize: 0.01
-                        to: 14
+                        to: heater_max
                         orientation: Qt.Vertical
                         value: 0
 
@@ -538,7 +540,7 @@ Pane {
                             font.pixelSize: 18
                             cursorVisible: true
                             selectByMouse: true
-                            validator: DoubleValidator{ locale: ""; top: 14; bottom: 0;}
+                            validator: DoubleValidator{ locale: ""; top: heater_max; bottom: 0;}
                             onAccepted: {
                                 sliderHeater4.value = text
                             }
@@ -627,7 +629,7 @@ Pane {
                         minimumValue: 0
                         value: sliderHeater5.value
                         minorTickmarkCount: 1
-                        maximumValue: 14
+                        maximumValue: heater_max
                         Behavior on value { NumberAnimation { duration: 100 } }
                     }
 
@@ -639,7 +641,7 @@ Pane {
                         wheelEnabled: true
                         value: 0
                         orientation: Qt.Vertical
-                        to: 14
+                        to: heater_max
                         onValueChanged: {
                             gaugeHeater5.value = backend.drvD(parseInt(textIHS5.text), value.toFixed(3)).slice(2)
                         }
@@ -666,7 +668,7 @@ Pane {
                             text: sliderHeater5.value.toFixed(3)
                             font.pixelSize: 18
                             selectByMouse: true
-                            validator: DoubleValidator{ locale: ""; bottom: 0; top: 14;}
+                            validator: DoubleValidator{ locale: ""; bottom: 0; top: heater_max;}
                             onAccepted: {
                                 sliderHeater5.value = text
                             }
@@ -752,7 +754,7 @@ Pane {
                         minimumValue: 0
                         value: sliderHeater6.value
                         minorTickmarkCount: 1
-                        maximumValue: 14
+                        maximumValue: heater_max
                         Behavior on value { NumberAnimation { duration: 100 } }
                     }
 
@@ -764,7 +766,7 @@ Pane {
                         wheelEnabled: true
                         value: 0
                         orientation: Qt.Vertical
-                        to: 14
+                        to: heater_max
                         onValueChanged: {
                             gaugeHeater6.value = backend.drvD(parseInt(textIHS6.text), value.toFixed(3)).slice(2)
                         }
@@ -791,7 +793,7 @@ Pane {
                             text: sliderHeater6.value.toFixed(3)
                             font.pixelSize: 18
                             selectByMouse: true
-                            validator: DoubleValidator{ locale: ""; bottom: 0; top: 14;}
+                            validator: DoubleValidator{ locale: ""; bottom: 0; top: heater_max;}
                             onAccepted: {
                                 sliderHeater6.value = text
                             }
@@ -1215,12 +1217,3 @@ Pane {
         sliderWl.value = backend.findWl(wl)
     }
 }
-
-
-
-
-/*##^##
-Designer {
-    D{i:0;formeditorZoom:0.75}
-}
-##^##*/
