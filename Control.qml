@@ -9,10 +9,10 @@ Window {
     minimumWidth: 1400
     height: 540
     minimumHeight: 540
-    title: "CT3-2022-V1.12T"
+    title: "CT3-2022-V1.13T-INT"
     // @disable-check M16
     onClosing: {
-        backend.rst()
+        backend.systStat(0)
         backend.close()
     }
 
