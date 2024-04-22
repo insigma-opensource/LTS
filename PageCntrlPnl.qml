@@ -16,7 +16,7 @@ Pane {
         id: rowCntrlPnl
         width: parent.width
         height: parent.height
-        spacing: (width - 6*frameHeater1.width - frameSw.width)/6
+        spacing: (width - 6*frameHeater1.width - frameSw.width - frameTec.width)/7
 
         Frame {
             id: frameHeater1
@@ -780,8 +780,153 @@ Pane {
                 }
 
             }
+        }
 
+        Frame {
+            id: frameTec
+            width: 160
+            height: parent.height
 
+            Column {
+                id: columnTec
+                anchors.fill: parent
+
+                Row {
+                    id: rowHeaderTec
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 20
+                    width: textHeaderTec.width + 10
+
+                    Text {
+                        id: textHeaderTec
+                        text: "TEC"
+                        font.pixelSize: 18
+                    }
+
+                    Button {
+                        id: enableTec
+                        height: 22
+                        text: (checked & switch3.checked) ? " ıı":"\u23F5"
+                        leftPadding: 0
+                        antialiasing: true
+                        rightPadding: 0
+                        background: Rectangle {}
+                        checkable: true
+                        checked: true
+                        display: AbstractButton.TextOnly
+                        contentItem: Label {
+                            text: enableTec.text
+                            color: "black"
+                        }
+                    }
+                }
+
+                Row {
+                    id: rowTec
+                    height: columnTec.height - textHeaderTec.height - colSetGetTec.height - 2*columnTec.spacing
+
+                    Gauge {
+                        id: gaugeTec
+                        height: parent.height
+                        antialiasing: true
+                        tickmarkStepSize: 1
+                        minimumValue: 15
+                        value: -1
+                        minorTickmarkCount: 1
+                        maximumValue: 30
+                        Behavior on value { NumberAnimation { duration: 100 } }
+
+                        Timer {
+                            id: timerTemp
+                            interval: 1000; repeat: true; running: switch3.checked & enableTec.checked
+                            onTriggered: {
+                                gaugeTec.value = backend.tecTemp().slice(2)
+                            }
+                        }
+                    }
+
+                    Slider {
+                        id: sliderTec
+                        height: parent.height
+                        antialiasing: true
+                        stepSize: 0.01
+                        wheelEnabled: true
+                        value: 21
+                        orientation: Qt.Vertical
+                        to: 30
+                        from: 15
+                        onValueChanged: {
+                            backend.tecTemp(value.toFixed(2)).slice(2)
+                        }
+                    }
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+
+                Column {
+                    id: colSetGetTec
+                    width: parent.width
+                    height: 41
+                    Row {
+                        id: rowSetTec
+                        anchors.left: parent.left
+                        Text {
+                            id: textSetTec
+                            text: "Set: "
+                            anchors.verticalCenter: parent.verticalCenter
+                            font.pixelSize: 18
+                        }
+
+                        TextInput {
+                            id: textEditSetTec
+                            text: sliderTec.value.toFixed(2)
+                            font.pixelSize: 18
+                            selectByMouse: true
+                            validator: DoubleValidator{ locale: ""; bottom: 15; top: 30;}
+                            onAccepted: {
+                                sliderTec.value = text
+                            }
+
+                            MouseArea {
+                                id: mouseAreaPrecisionTec
+                                anchors.fill: parent
+                                cursorShape: Qt.IBeamCursor
+                                onPressed: function(mouse) { mouse.accepted = false }
+                                onWheel: {
+                                    var oldCurs = textEditSetTec.cursorPosition
+                                    var curs = textEditSetTec.text.length - oldCurs
+                                    if (wheel.angleDelta.y > 0) {
+                                        if (curs > 2) {
+                                            sliderTec.value += 1
+                                        } else {
+                                            sliderTec.value += (10**(curs+1))/1000
+                                        }
+
+                                    } else {
+                                        if (curs > 2) {
+                                            sliderTec.value -= 1
+                                        } else {
+                                            sliderTec.value -= (10**(curs+1))/1000
+                                        }
+                                    }
+                                    textEditSetTec.cursorPosition = textEditSetTec.text.length - curs
+                                }
+                            }
+                        }
+                        anchors.leftMargin: 40
+                    }
+
+                    Row {
+                        id: rowGetTec
+                        anchors.left: rowSetTec.left
+                        Text {
+                            id: textGetTec
+                            text: "Get: " + gaugeTec.value.toFixed(2) + " °C"
+                            font.pixelSize: 18
+                        }
+                    }
+                }
+                spacing: 15
+            }
         }
 
         Frame {

@@ -125,6 +125,17 @@ class pyLaser(QObject):
             self.write("DRV:D? %d" % arg1)
         return self.read()
 
+    @Slot(result=str)
+    @Slot(float, result=str)
+    def tecTemp(self, arg=None):  # control and return tec temp level
+        if arg is None:
+            self.write("TEC:TEMP?")
+        else:
+            self.write("TEC:TTGT %.2f" % arg)
+            success = self.read()
+            self.write("TEC:TTGT?")
+        return self.read()
+
     @Slot(QUrl, result=list)
     def getSettings(self, path):
 

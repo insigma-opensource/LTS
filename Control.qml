@@ -5,11 +5,11 @@ import QtQuick.Extras 1.4
 
 Window {
     id: window
-    width: 1300
-    minimumWidth: 1300
+    width: 1400
+    minimumWidth: 1400
     height: 540
     minimumHeight: 540
-    title: "CT3-2022-V1.12"
+    title: "CT3-2022-V1.12T"
     // @disable-check M16
     onClosing: {
         backend.rst()
