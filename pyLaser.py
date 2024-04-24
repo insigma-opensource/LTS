@@ -136,6 +136,11 @@ class pyLaser(QObject):
             self.write("TEC:TTGT?")
         return self.read()
 
+    @Slot(int, result=str)
+    def measM(self, arg):
+        self.write("MEAS:M? %d" % arg)
+        return self.read()
+
     @Slot(QUrl, result=list)
     def getSettings(self, path):
 

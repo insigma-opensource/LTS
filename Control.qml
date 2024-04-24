@@ -5,10 +5,10 @@ import QtQuick.Extras 1.4
 
 Window {
     id: window
-    width: 1400
-    minimumWidth: 1400
+    width: 1753
+    minimumWidth: 305
     height: 540
-    minimumHeight: 540
+    minimumHeight: 200
     title: "CT3-2022-V1.13T-INT"
     // @disable-check M16
     onClosing: {
