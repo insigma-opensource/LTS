@@ -66,7 +66,7 @@ Pane {
 
                 ScrollView {
                     id: serialInputReadScroll
-                    anchors.top: serialInputReadRec.top-10
+                    anchors.fill: serialInputReadRec
                     clip: true
                     
                     Text {
