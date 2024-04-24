@@ -36,6 +36,11 @@ Window {
             id: mode
             text: "Scan"
         }
+
+        TabButton {
+            id: serialCom
+            text: "Serial Terminal"
+        }
     }
 
     SwipeView {
@@ -52,6 +57,10 @@ Window {
         }
         PageScan {
             id: pageScan
+        }
+
+        PageSerial {
+            id: serialPage
         }
     }
 

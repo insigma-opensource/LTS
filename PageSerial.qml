@@ -10,6 +10,12 @@ Pane {
     width: 640
     height: 500
 
+    Component.onCompleted: {
+        backend.pushExtras(extras)
+    }
+
+    property var extras: [serialRead]
+
     Frame {
         id: serialPageFrame
         anchors.fill: parent
@@ -43,7 +49,9 @@ Pane {
                     text: "SEND"
                     width: (serialPageFrame.width/8)
                     onClicked: {
-                        console.log("Button was clicked!")
+                        console.log(serialInput.text)
+                        backend.write(serialInput.text)
+                        backend.read2Terminal()
                     }
                 }
             }
@@ -58,12 +66,15 @@ Pane {
 
                 ScrollView {
                     id: serialInputReadScroll
-                    anchors.fill: serialInputReadRec
+                    anchors.top: serialInputReadRec.top-10
+                    clip: true
                     
                     Text {
                     id: serialRead
                     wrapMode: Text.WordWrap
                     text: " Test Test"
+
+                    
                     }
                 }
             }
