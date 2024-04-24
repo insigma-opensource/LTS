@@ -14,6 +14,7 @@ class pyLaser(QObject):
         self.initOn = 0
         self.sweepOn = 0
         self.TerminalText = "---"
+        self.TerminalLineCount = 0
 
     @Slot(result=list)
     def listPorts(self):
@@ -59,11 +60,13 @@ class pyLaser(QObject):
     def read2Terminal(self):
         if self.ser is not None:
             data = self.read()  
-            self.TerminalText += "\n-> " + data
+            self.TerminalLineCount += 1
+            self.TerminalText = self.TerminalText + "\n" + " " + str(self.TerminalLineCount) + " " + "->"  + data
             self.TerminalRead.setProperty("text", self.TerminalText)
         else:
             print("Serial communication not initialized.")
-            self.TerminalText += "\n-> Serial communication not initialized."
+            self.TerminalLineCount += 1
+            self.TerminalText = self.TerminalText + "\n " + " " + str(self.TerminalLineCount) + " " + "-> Serial communication not initialized."
             self.TerminalRead.setProperty("text", self.TerminalText)
 
     @Slot()
