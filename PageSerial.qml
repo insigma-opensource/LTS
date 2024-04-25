@@ -42,7 +42,10 @@ Pane {
                     id: serialInput
                     width: (serialPageFrame.width/8)*3
                     placeholderText: "Enter Serial Input Here"
-                    onTextChanged: console.log("Text changed to:", text)
+                    onAccepted: { backend.write(serialInput.text)
+                        backend.read2Terminal()
+                        flickableTerminal.contentY = flickableTerminal.contentHeight - flickableTerminal.height
+                    }
                 }
 
                 Button {
@@ -50,7 +53,6 @@ Pane {
                     text: "SEND"
                     width: (serialPageFrame.width/8)
                     onClicked: {
-                        console.log(serialInput.text)
                         backend.write(serialInput.text)
                         backend.read2Terminal()
                         flickableTerminal.contentY = flickableTerminal.contentHeight - flickableTerminal.height
