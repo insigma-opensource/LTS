@@ -28,7 +28,8 @@ Pane {
                 id: serialInputLabel
                 height: 20
                 text: "Serial Input"
-                font.pixelSize: 18
+                font.pointSize: 12
+                font.bold : true
                 minimumPixelSize: 15
             }
 
@@ -63,6 +64,7 @@ Pane {
                 border.color: "grey"
                 border.width: 1
                 radius: 3
+                color: "#F2F2F2"
 
                 ScrollView {
                     id: serialInputReadScroll
@@ -75,7 +77,8 @@ Pane {
                     Text {
                     id: serialRead
                     wrapMode: Text.WordWrap
-                    text: " Test Test"
+                    text: " "
+                    font.pointSize: 10
 
                     
                     }

@@ -13,7 +13,7 @@ class pyLaser(QObject):
         self.ser = None
         self.initOn = 0
         self.sweepOn = 0
-        self.TerminalText = "---"
+        self.TerminalText = " "
         self.TerminalLineCount = 0
 
     @Slot(result=list)
