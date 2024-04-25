@@ -53,6 +53,7 @@ Pane {
                         console.log(serialInput.text)
                         backend.write(serialInput.text)
                         backend.read2Terminal()
+                        flickableTerminal.contentY = flickableTerminal.contentHeight - flickableTerminal.height
                     }
                 }
             }
@@ -73,14 +74,20 @@ Pane {
                     clip: true
                     ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
                     ScrollBar.vertical.policy: ScrollBar.AlwaysOn
-                    
-                    Text {
-                    id: serialRead
-                    wrapMode: Text.WordWrap
-                    text: " "
-                    font.pointSize: 10
 
+                    Flickable {
+                        id: flickableTerminal
+                        contentWidth: serialRead.width
+                        contentHeight: serialRead.height
+                        width: parent.width
+                        height: parent.height
                     
+                        Text {
+                            id: serialRead
+                            wrapMode: Text.WordWrap
+                            text: " "
+                            font.pointSize: 10
+                        }
                     }
                 }
             }
