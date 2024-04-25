@@ -62,12 +62,15 @@ Pane {
                 height: (serialPageFrame.height/8)*5
                 border.color: "grey"
                 border.width: 1
-                radius: 5
+                radius: 3
 
                 ScrollView {
                     id: serialInputReadScroll
                     anchors.fill: serialInputReadRec
+                    anchors.margins: 10
                     clip: true
+                    ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+                    ScrollBar.vertical.policy: ScrollBar.AlwaysOn
                     
                     Text {
                     id: serialRead
@@ -77,33 +80,6 @@ Pane {
                     
                     }
                 }
-            }
-
-            Row{
-                id: terminationSelect
-                height: 40
-                spacing: 20
-                
-                Text {
-                    id: terminationSelectText
-                    text:  "String termination"
-                    width: (serialPageFrame.width/16)*5
-                    font.pixelSize: 18
-                    minimumPixelSize: 15
-                }
-
-                ComboBox {
-                    id: terminationSelectComboBox
-                    width: (serialPageFrame.width/16)*3
-
-                    model: ListModel {
-                    ListElement { text: "Option 1" }
-                    ListElement { text: "Option 2" }
-                    ListElement { text: "Option 3" }
-                    }
-
-                    onActivated: console.log("Selected index:", currentIndex, "text:", currentText) 
-                    }
             }
         }
     }
