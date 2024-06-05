@@ -97,9 +97,6 @@ Pane {
 
                         backend.call_configureLaser()
                         backend.call_hysterises()
-
-                        button1.enabled = true
-                        button2.enabled = true
                         
                         backend.call_configFeedback()
                         startWait.start()
@@ -107,15 +104,14 @@ Pane {
                         if (parseInt(backend.systStat().slice(2))) {
                             statusIndicator1.color = "green"
                             buttonStart.text = "Stop laser"
+                            button1.enabled = true
+                            button2.enabled = true
                             isbuttonStartToggled = !isbuttonStartToggled
                         } else {
                             statusIndicator1.color = "red"
                         }
 
                     }else{
-                        
-                        button1.enabled = false
-                        button2.enabled = false
 
                         backend.fbStat(0)
                         if (parseInt(backend.fbStat().slice(2))) {
@@ -130,6 +126,8 @@ Pane {
                         } else {
                             statusIndicator1.color = "red"
                             buttonStart.text = "Start laser"
+                            button1.enabled = false
+                            button2.enabled = false
                             isbuttonStartToggled = !isbuttonStartToggled
                         }
                     }
@@ -162,9 +160,6 @@ Pane {
                     backend.call_configureLaser()
                     backend.call_hysterises()
 
-                    button1.enabled = true
-                    button2.enabled = true
-
                     backend.call_configFeedback()
                     restartWait.start()
 
@@ -177,9 +172,9 @@ Pane {
                     if (parseInt(backend.systStat().slice(2))) {
                         statusIndicator1.color = "green"
                         buttonStart.text = "Stop laser"
-                        buttonStart.enabled = enabled
-                        button1.enabled     = enabled
-                        button2.enabled     = enabled
+                        buttonStart.enabled = true
+                        button1.enabled     = true
+                        button2.enabled     = true
                     } else {
                         statusIndicator1.color = "red"
                     }
