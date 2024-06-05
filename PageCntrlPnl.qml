@@ -94,21 +94,15 @@ Pane {
                 onClicked: {
                     if (!isbuttonStartToggled) {
                         busyIndicator.running = true
+
                         backend.call_configureLaser()
-
-                        busyIndicator.running = true
-                        startWait.start()
-
-                        busyIndicator.running = true
                         backend.call_hysterises()
-                        startWait2.start()
 
                         button1.enabled = true
                         button2.enabled = true
                         
-                        busyIndicator.running = true
                         backend.call_configFeedback()
-                        startWait2.start()
+                        startWait.start()
                         
                         if (parseInt(backend.systStat().slice(2))) {
                             statusIndicator1.color = "green"
@@ -149,15 +143,6 @@ Pane {
                         pageCntrlPnl.idn = backend.idn()
                     }
                 }
-
-                Timer {
-                    id: startWait2
-                    interval: 2000; running: false; repeat: false
-                    onTriggered: {
-                        busyIndicator.running = false
-                        pageCntrlPnl.idn = backend.idn()
-                    }
-                }
             }
 
             Button {
@@ -168,25 +153,20 @@ Pane {
                 enabled: false
                 visible: false
                 onClicked: {
+                    busyIndicator.running = true
                     buttonStart.text = "Start laser"
                     buttonStart.enabled = false
                     button1.enabled     = false
                     button2.enabled     = false
 
-                    busyIndicator.running = true
                     backend.call_configureLaser()
-                    restartWait.start()
-
-                    busyIndicator.running = true
                     backend.call_hysterises()
-                    restartWait2.start()
 
                     button1.enabled = true
                     button2.enabled = true
 
-                    busyIndicator.running = true
                     backend.call_configFeedback()
-                    restartWait2.start()
+                    restartWait.start()
 
                     if (parseInt(backend.fbStat().slice(2))) {
                         feedbackIndicator.color = "green" 
@@ -203,7 +183,6 @@ Pane {
                     } else {
                         statusIndicator1.color = "red"
                     }
-
                 }
 
                 Timer {
@@ -211,16 +190,6 @@ Pane {
                     interval: 5000; running: false; repeat: false
                     onTriggered: {
                         busyIndicator.running = false
-                        pageCntrlPnl.idn = backend.idn()
-                    }
-                }
-
-                Timer {
-                    id: restartWait2
-                    interval: 2000; running: false; repeat: false
-                    onTriggered: {
-                        busyIndicator.running = false
-                        pageCntrlPnl.idn = backend.idn()
                     }
                 }
             }
@@ -237,7 +206,7 @@ Pane {
                 visible: false
                 checked: false
                 onClicked: {
-                    if (isToggled) {
+                    if (!isToggled) {
 
                         backend.fbStat(1)
                         if (parseInt(backend.fbStat().slice(2))) {
@@ -300,7 +269,6 @@ Pane {
             }
         }
     
-
         BusyIndicator {
             id: busyIndicator
             anchors.verticalCenter: parent.verticalCenter
