@@ -5,11 +5,11 @@ import QtQuick.Extras 1.4
 
 Window {
     id: window
-    width: 1753
-    minimumWidth: 305
-    height: 540
-    minimumHeight: 200
-    title: "CT3-2022-V1.13T-INT"
+    width: 570
+    minimumWidth: 570
+    height: 500
+    minimumHeight: 500
+    title: "CF3-v2.0-INT"
     // @disable-check M16
     onClosing: {
         backend.systStat(0)
@@ -21,46 +21,27 @@ Window {
         y = (Screen.height - height) / 2
     }
 
+
     TabBar {
         id: tabBar
         width: parent.width
         font.pointSize: 15
         spacing: 0
         currentIndex: stackView.currentIndex
-
-        TabButton {
-            id: cntrlPnl
-            text: "Control Panel"
-        }
-        TabButton {
-            id: mode
-            text: "Scan"
-        }
-
-        TabButton {
-            id: serialCom
-            text: "Serial Terminal"
-        }
     }
 
     SwipeView {
         id: stackView
-        anchors.left: parent.left
-        anchors.right: parent.right
         anchors.top: tabBar.bottom
         anchors.bottom: pageIndicator.top
         currentIndex: tabBar.currentIndex
+        anchors.left: parent.left
+        anchors.right: parent.right
 
         PageCntrlPnl {
             id: pageCntrlPnl
-            onLutOnChanged: lutOn ? pageScan.lutOn = true:pageScan.lutOn = false
-        }
-        PageScan {
-            id: pageScan
-        }
-
-        PageSerial {
-            id: serialPage
+            width: parent.width
+            height: parent.height
         }
     }
 
@@ -70,6 +51,7 @@ Window {
         anchors.horizontalCenter: parent.horizontalCenter
         count: stackView.count
         currentIndex: stackView.currentIndex
+        visible: false
     }
 
     Text {
@@ -80,17 +62,6 @@ Window {
         font.pixelSize: 15
         anchors.bottomMargin: 5
         anchors.rightMargin: 15
-    }
-
-    Text {
-        id: textTask
-        text: pageScan.scanOn ? "Scanning...":"Scan Stopped"
-        color: pageScan.scanOn ? "#FF0000":"#000000"
-        anchors.left: parent.left
-        anchors.bottom: parent.bottom
-        font.pixelSize: 15
-        anchors.bottomMargin: 5
-        anchors.leftMargin: 15
     }
 }
 

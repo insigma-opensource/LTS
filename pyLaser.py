@@ -6,6 +6,7 @@ import numpy as np
 import time
 import threading
 import csv
+from concurrent.futures import ThreadPoolExecutor
 
 class pyLaser(QObject):
     def __init__(self):
@@ -15,6 +16,7 @@ class pyLaser(QObject):
         self.sweepOn = 0
         self.TerminalText = " "
         self.TerminalLineCount = 0
+        self.executor = ThreadPoolExecutor()
 
     @Slot(result=list)
     def listPorts(self):
@@ -83,11 +85,43 @@ class pyLaser(QObject):
     def idn(self):  # returns the device string
         self.write("*IDN?")
         return self.read()[2:-2].replace(",", " ")
+    
+    def configureLaser(self):
+        self.systStat(1)
+        self.tecTemp(21)
+        self.lsrIlev(250.000)
+        self.drvD(2,2.420)
+        self.drvD(1,0.930)
+        self.drvD(3,0.000)
+        self.initOn = 0
+        self.initProg = self.initProg + " Done!"
 
+    @Slot()
+    def call_configureLaser(self):
+        if not self.initOn:
+            self.initOn = 1
+            self.initProg = ""
+            self.configureLaser()
+
+    @Slot()
+    def call_hysterises(self):
+        if not self.initOn:
+            self.initOn = 1
+            self.initProg = ""
+            self.hysterises()
+
+    @Slot()
+    def call_configFeedback(self):
+        if not self.initOn:
+            self.initOn = 1
+            self.initProg = ""
+            self.configFeedback()
+        
     @Slot(result=str)
     def rst(self):  # resets system
         self.write("*RST")
         success = self.read()
+        time.sleep(2)
 
     @Slot(result=str)
     @Slot(int, result=str)
@@ -98,6 +132,17 @@ class pyLaser(QObject):
             self.write("SYST:STAT %d" % arg)
             success = self.read()
             self.write("SYST:STAT?")
+        return self.read()
+    
+    @Slot(result=str)
+    @Slot(int, result=str)
+    def fbStat(self, arg=None):  # control and return system state
+        if arg is None:
+            self.write("FB:STAT?")
+        else:
+            self.write("FB:STAT %d" % arg)
+            success = self.read()
+            self.write("FB:STAT?")
         return self.read()
 
     @Slot(result=str)
@@ -215,6 +260,36 @@ class pyLaser(QObject):
         self.write("DRV:CYC:RUN")
         success = self.read()
         return success
+    
+    def hysterises(self):
+        dv_sq_values = [35, 26, 20, 15, 12.5, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+        for dv_sq in dv_sq_values:
+            voltage = np.sqrt(3.7417**2 + dv_sq)
+            print("drvD 3 ", voltage)
+            self.drvD(3, voltage)
+        self.initOn = 0
+        self.initProg = self.initProg + " Done!"
+        
+    def configFeedback(self):
+        self.write("FB:NSEL 0")
+        self.read()
+        self.write("FB:SRC 4")
+        self.read()
+        self.write("FB:DST 1")
+        self.read()
+        self.write("FB:INT 500")
+        self.read()
+        self.write("FB:SETP 23.0")
+        self.read()
+        self.write("FB:KP -0.026000")
+        self.read()
+        self.write("FB:KI 0.000000")
+        self.read()
+        self.write("FB:KD 0.000000")
+        self.read()
+        self.initOn = 0
+        self.initProg = self.initProg + " Done!"
+
 
     @Slot(result=str)
     def drvCycAbrt(self):
