@@ -196,7 +196,7 @@ Pane {
                 property bool isToggled: false
 
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: qsTr("Enable Feedback loop")
+                text: qsTr("Enable feedback loop")
                 enabled: false
                 visible: false
                 checked: false
