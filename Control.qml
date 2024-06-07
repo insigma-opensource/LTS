@@ -9,7 +9,7 @@ Window {
     minimumWidth: 570
     height: 500
     minimumHeight: 500
-    title: "CF3-v2.0-INT"
+    title: "CF3-v2.0.2-INT"
     // @disable-check M16
     onClosing: {
         backend.systStat(0)
