@@ -14,6 +14,7 @@ class pyLaser(QObject):
         self.ser = None
         self.initOn = 0
         self.sweepOn = 0
+        self.activeExecution = 0
         self.TerminalText = " "
         self.TerminalLineCount = 0
         self.executor = ThreadPoolExecutor()
@@ -87,35 +88,34 @@ class pyLaser(QObject):
         return self.read()[2:-2].replace(",", " ")
     
     def configureLaser(self):
+        time.sleep(0.1)
         self.systStat(1)
         self.tecTemp(21)
         self.lsrIlev(250.000)
         self.drvD(2,2.420)
         self.drvD(1,0.930)
         self.drvD(3,0.000)
-        self.initOn = 0
-        self.initProg = self.initProg + " Done!"
 
     @Slot()
     def call_configureLaser(self):
-        if not self.initOn:
-            self.initOn = 1
-            self.initProg = ""
-            self.configureLaser()
+        if not self.activeExecution:
+            self.activeExecution = 1
+            configureLaser_thread = self.executor.submit(self.configureLaser())
+            self.activeExecution = 0
 
     @Slot()
     def call_hysterises(self):
-        if not self.initOn:
-            self.initOn = 1
-            self.initProg = ""
-            self.hysterises()
+        if not self.activeExecution:
+            self.activeExecution = 1
+            hysterises_thread = self.executor.submit(self.hysterises())
+            self.activeExecution = 0
 
     @Slot()
     def call_configFeedback(self):
-        if not self.initOn:
-            self.initOn = 1
-            self.initProg = ""
-            self.configFeedback()
+        if not self.activeExecution:
+            self.activeExecution = 1
+            configFeedback_thread = self.executor.submit(self.configFeedback())
+            self.activeExecution = 0
         
     @Slot(result=str)
     def rst(self):  # resets system
@@ -262,15 +262,17 @@ class pyLaser(QObject):
         return success
     
     def hysterises(self):
+        time.sleep(0.1)
         dv_sq_values = [35, 26, 20, 15, 12.5, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
         for dv_sq in dv_sq_values:
-            voltage = np.sqrt(3.7417**2 + dv_sq)
+            voltage = np.sqrt(3.8341**2 + dv_sq)
             print("drvD 3 ", voltage)
             self.drvD(3, voltage)
-        self.initOn = 0
-        self.initProg = self.initProg + " Done!"
+            time.sleep(0.1)
         
     def configFeedback(self):
+        time.sleep(0.1)
+
         self.write("FB:NSEL 0")
         self.read()
         self.write("FB:SRC 4")
@@ -287,8 +289,6 @@ class pyLaser(QObject):
         self.read()
         self.write("FB:KD 0.000000")
         self.read()
-        self.initOn = 0
-        self.initProg = self.initProg + " Done!"
 
 
     @Slot(result=str)

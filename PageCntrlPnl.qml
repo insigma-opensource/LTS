@@ -83,53 +83,42 @@ Pane {
             Button {
                 id: buttonStart
                 width: (parent.width/9)*6
-
-                property bool isbuttonStartToggled: false
-
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: qsTr("Start laser")
                 enabled: false
                 visible: false
                 checked: false
                 onClicked: {
-                    if (!isbuttonStartToggled) {
-                        busyIndicator.running = true
+                    busyIndicator.running = true
 
+                    if (!(parseInt(backend.systStat().slice(2)))) {
+                        startWait.start()
                         backend.call_configureLaser()
                         backend.call_hysterises()
                         
                         backend.call_configFeedback()
-                        startWait.start()
-                        
-                        if (parseInt(backend.systStat().slice(2))) {
-                            statusIndicator1.color = "green"
-                            buttonStart.text = "Stop laser"
-                            button1.enabled = true
-                            button2.enabled = true
-                            isbuttonStartToggled = !isbuttonStartToggled
-                        } else {
-                            statusIndicator1.color = "red"
-                        }
 
                     }else{
-
                         backend.fbStat(0)
                         if (parseInt(backend.fbStat().slice(2))) {
                             feedbackIndicator.color = "green" 
                         }else { 
                             feedbackIndicator.color = "red"
                         }
-
                         backend.systStat(0) 
+
                         if (parseInt(backend.systStat().slice(2))) {
                             statusIndicator1.color = "green"
+                            buttonStart.text = "Stop laser"
+                            button1.enabled = true
+                            button2.enabled = true
                         } else {
                             statusIndicator1.color = "red"
                             buttonStart.text = "Start laser"
                             button1.enabled = false
                             button2.enabled = false
-                            isbuttonStartToggled = !isbuttonStartToggled
                         }
+                        busyIndicator.running = false
                     }
                 }
 
@@ -137,8 +126,19 @@ Pane {
                     id: startWait
                     interval: 5000; running: false; repeat: false
                     onTriggered: {
-                        busyIndicator.running = false
+                        if (parseInt(backend.systStat().slice(2))) {
+                            statusIndicator1.color = "green"
+                            buttonStart.text = "Stop laser"
+                            button1.enabled = true
+                            button2.enabled = true
+                        } else {
+                            statusIndicator1.color = "red"
+                            buttonStart.text = "Start laser"
+                            button1.enabled = false
+                            button2.enabled = false
+                        }
                         pageCntrlPnl.idn = backend.idn()
+                        busyIndicator.running = false
                     }
                 }
             }
@@ -150,33 +150,25 @@ Pane {
                 text: qsTr("Reset laser")
                 enabled: false
                 visible: false
+                checked: false
                 onClicked: {
-                    busyIndicator.running = true
                     buttonStart.text = "Start laser"
                     buttonStart.enabled = false
                     button1.enabled     = false
                     button2.enabled     = false
 
+                    busyIndicator.running = true
+                    restartWait.start()
+
                     backend.call_configureLaser()
                     backend.call_hysterises()
 
                     backend.call_configFeedback()
-                    restartWait.start()
 
                     if (parseInt(backend.fbStat().slice(2))) {
-                        feedbackIndicator.color = "green" 
+                        feedbackIndicator.color = "green"
                     }else { 
                         feedbackIndicator.color = "red"
-                    }
-
-                    if (parseInt(backend.systStat().slice(2))) {
-                        statusIndicator1.color = "green"
-                        buttonStart.text = "Stop laser"
-                        buttonStart.enabled = true
-                        button1.enabled     = true
-                        button2.enabled     = true
-                    } else {
-                        statusIndicator1.color = "red"
                     }
                 }
 
@@ -184,6 +176,18 @@ Pane {
                     id: restartWait
                     interval: 5000; running: false; repeat: false
                     onTriggered: {
+                        if (parseInt(backend.systStat().slice(2))) {
+                            statusIndicator1.color = "green"
+                            buttonStart.text = "Stop laser"
+                            buttonStart.enabled = true
+                            button1.enabled     = true
+                            button2.enabled     = true
+                        } else {
+                            statusIndicator1.color = "red"
+                            buttonStart.enabled = false
+                            button1.enabled     = false
+                            button2.enabled     = false
+                        }
                         busyIndicator.running = false
                     }
                 }
@@ -192,35 +196,34 @@ Pane {
             Button {
                 id: button2
                 width: (parent.width/9)*6
-
-                property bool isToggled: false
-
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: qsTr("Enable feedback loop")
                 enabled: false
                 visible: false
                 checked: false
                 onClicked: {
-                    if (!isToggled) {
+                    busyIndicator.running = true
+                    feedbackWait.start()
 
+                    if (!(parseInt(backend.fbStat().slice(2)))) {
                         backend.fbStat(1)
+                    } else {
+                        backend.fbStat(0)
+                    }
+                }
+                Timer {
+                    id: feedbackWait
+                    interval: 1000; running: false; repeat: false
+
+                    onTriggered: {
                         if (parseInt(backend.fbStat().slice(2))) {
                             feedbackIndicator.color = "green"
                             button2.text = "Disable feedback loop"
-                            isToggled = !isToggled
-                        } else {
-                            feedbackIndicator.color = "red"
-                        }
-
-                    } else {
-                        backend.fbStat(0)
-                        if (parseInt(backend.fbStat().slice(2))) {
-                            feedbackIndicator.color = "green"
                         } else {
                             feedbackIndicator.color = "red"
                             button2.text = "Enable feedback loop" 
-                            isToggled = !isToggled
                         }
+                        busyIndicator.running = false
                     }
                 }
             }
