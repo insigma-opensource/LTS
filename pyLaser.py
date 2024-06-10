@@ -17,7 +17,7 @@ class pyLaser(QObject):
         self.activeExecution = 0
         self.TerminalText = " "
         self.TerminalLineCount = 0
-        self.executor = ThreadPoolExecutor()
+        self.executor = ThreadPoolExecutor(max_workers=3)
 
     @Slot(result=list)
     def listPorts(self):
@@ -266,8 +266,8 @@ class pyLaser(QObject):
         dv_sq_values = [35, 26, 20, 15, 12.5, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
         for dv_sq in dv_sq_values:
             voltage = np.sqrt(3.8341**2 + dv_sq)
-            print("drvD 3 ", voltage)
-            self.drvD(3, voltage)
+            print("drvD 0 ", voltage)
+            self.drvD(0, voltage)
             time.sleep(0.1)
         
     def configFeedback(self):
