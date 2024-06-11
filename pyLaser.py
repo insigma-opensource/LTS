@@ -95,27 +95,46 @@ class pyLaser(QObject):
         self.drvD(2,2.420)
         self.drvD(1,0.930)
         self.drvD(3,0.000)
+        time.sleep(5)
 
     @Slot()
     def call_configureLaser(self):
         if not self.activeExecution:
             self.activeExecution = 1
-            configureLaser_thread = self.executor.submit(self.configureLaser())
+            configureLaser_thread  = self.executor.submit(self.configureLaser)
             self.activeExecution = 0
+        else:
+            return 0
+            
 
     @Slot()
     def call_hysterises(self):
         if not self.activeExecution:
             self.activeExecution = 1
-            hysterises_thread = self.executor.submit(self.hysterises())
+            hysterises_thread = self.executor.submit(self.hysterises)
             self.activeExecution = 0
+        else:
+            return 0
 
     @Slot()
     def call_configFeedback(self):
         if not self.activeExecution:
             self.activeExecution = 1
-            configFeedback_thread = self.executor.submit(self.configFeedback())
+            configFeedback_thread = self.executor.submit(self.configFeedback)
             self.activeExecution = 0
+        else:
+            return 0
+        
+    def start_Laser(self):
+        self.configureLaser()
+        self.hysterises()
+        self.configFeedback()
+
+    @Slot()
+    def call_start_Laser(self):
+        self.activeExecution = 1
+        start_Laser_thread = self.executor.submit(self.start_Laser)
+        self.activeExecution = 0
         
     @Slot(result=str)
     def rst(self):  # resets system

@@ -93,10 +93,7 @@ Pane {
 
                     if (!(parseInt(backend.systStat().slice(2)))) {
                         startWait.start()
-                        backend.call_configureLaser()
-                        backend.call_hysterises()
-                        
-                        backend.call_configFeedback()
+                        backend.call_start_Laser()
 
                     }else{
                         backend.fbStat(0)
@@ -124,7 +121,7 @@ Pane {
 
                 Timer {
                     id: startWait
-                    interval: 5000; running: false; repeat: false
+                    interval: 9000; running: false; repeat: false
                     onTriggered: {
                         if (parseInt(backend.systStat().slice(2))) {
                             statusIndicator1.color = "green"
@@ -160,10 +157,7 @@ Pane {
                     busyIndicator.running = true
                     restartWait.start()
 
-                    backend.call_configureLaser()
-                    backend.call_hysterises()
-
-                    backend.call_configFeedback()
+                    backend.call_start_Laser()
 
                     if (parseInt(backend.fbStat().slice(2))) {
                         feedbackIndicator.color = "green"
@@ -174,7 +168,7 @@ Pane {
 
                 Timer {
                     id: restartWait
-                    interval: 5000; running: false; repeat: false
+                    interval: 9000; running: false; repeat: false
                     onTriggered: {
                         if (parseInt(backend.systStat().slice(2))) {
                             statusIndicator1.color = "green"
