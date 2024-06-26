@@ -35,7 +35,7 @@ Window {
 
     Image {
         id: splashImage
-        source: "chilas.png"
+        source: "insigma.png"
         sourceSize.width: 500
     }
 

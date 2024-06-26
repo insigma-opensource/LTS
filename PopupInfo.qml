@@ -36,7 +36,7 @@ Popup {
         spacing: 10
 
         Text {
-            text: "Laser Tunning Software (LTS) v1.12"
+            text: "Laser Tunning Software (LTS)"
             font.bold: true
             width: parent.width
         }

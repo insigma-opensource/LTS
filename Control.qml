@@ -26,7 +26,7 @@ Window {
     minimumWidth: 1300
     height: 540
     minimumHeight: 540
-    title: "CT3-2022-V1.12"
+    title: "iTLS"
     // @disable-check M16
     onClosing: {
         backend.rst()

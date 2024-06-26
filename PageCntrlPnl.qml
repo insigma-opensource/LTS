@@ -903,7 +903,8 @@ Pane {
                 Image {
                     id: image
                     height: button.height *1.5
-                    source: "chilas.png"
+                    source: "insigma.png"
+                    sourceSize.width: 250
                     anchors.horizontalCenter: parent.horizontalCenter
                     fillMode: Image.PreserveAspectFit
                 }
