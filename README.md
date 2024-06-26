@@ -48,7 +48,7 @@ CF3-2022-V1.8
 ```
 
 ## Deployment
-Example code to make one file executable with obfuscated Python files.
+Example code to make one file executable.
 ```
-pyarmor pack --name "CT3-2022-V1.12" -e " --windowed --onefile --add-data "Control.qml;." --add-data "chilas.png;." --icon "icon.ico" --add-data "icon.ico;." --add-data "main.qml;." --add-data "PageCntrlPnl.qml;." --add-data "PageScan.qml;." --add-data "Splash.qml;."" main.py
+pyinstaller --name "CT3-2022-V1.12" --windowed --onefile --add-data "Control.qml;." --add-data "chilas.png;." --icon "icon.ico" --add-data "icon.ico;." --add-data "main.qml;." --add-data "PageCntrlPnl.qml;." --add-data "PageScan.qml;." --add-data "PopupInfo.qml;." --add-data "Splash.qml;." --add-data "LICENSE;." main.py
 ```
