@@ -26,7 +26,7 @@ Window {
     minimumWidth: 1300
     height: 500
     minimumHeight: 220
-    title: "CF3-2022-V1.8"
+    title: "CF3-2022-V1.9"
     // @disable-check M16
     onClosing: {
         backend.rst()

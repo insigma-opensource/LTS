@@ -694,7 +694,7 @@ Pane {
                         minimumValue: 0
                         value: 0
                         minorTickmarkCount: 3
-                        maximumValue: 250
+                        maximumValue: 300
                         Behavior on value { NumberAnimation { duration: 100 } }
                     }
 
@@ -706,7 +706,7 @@ Pane {
                         stepSize: 0.01
                         wheelEnabled: true
                         orientation: Qt.Vertical
-                        to: 250
+                        to: 300
                         onValueChanged: {
                             gaugeCurrent.value = backend.lsrIlev(value.toFixed(2)).slice(2)
                         }
@@ -735,7 +735,7 @@ Pane {
                             anchors.verticalCenter: parent.verticalCenter
                             font.pixelSize: 18
                             selectByMouse: true
-                            validator: DoubleValidator{ locale: ""; bottom: 0; top: 250;}
+                            validator: DoubleValidator{ locale: ""; bottom: 0; top: 300;}
                             onAccepted: {
                                 sliderCurrent.value = text
                             }
