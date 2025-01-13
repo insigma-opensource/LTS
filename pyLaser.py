@@ -132,7 +132,7 @@ class pyLaser(QObject):
         if arg2 is None:
             self.write("DRV:D? %d" % arg1)
         else:
-            self.write("DRV:D %d %.2f" % (arg1, arg2))
+            self.write("DRV:D %d %.4f" % (arg1, arg2))
             success = self.read()
             self.write("DRV:D? %d" % arg1)
         return self.read()
@@ -162,13 +162,13 @@ class pyLaser(QObject):
     @Slot(list)
     def saveSettings(self, set):
         date = time.strftime("%y%m%d-%H%M%S")
-        settings = np.array([[0, set[3], set[3], set[3]],
-                             [3, set[0], set[0], set[0]],
-                             [4, set[1], set[1], set[1]],
-                             [5, set[2], set[2], set[2]],
+        settings = np.array([[0, set[0], set[0], set[0]],
+                             [1, set[1], set[1], set[1]],
+                             [2, set[2], set[2], set[2]],
+                             [3, set[3], set[3], set[3]],
                              [7, set[4], float(set[4])+0.5, float(set[4])+1],
                              [8, set[5], set[5], set[5]]])
-        np.savetxt(date+'.csv', settings, delimiter=";", fmt=['%d', '%.2f', '%.2f', '%.2f'])
+        np.savetxt(date+'.csv', settings, delimiter=";", fmt=['%d', '%.4f', '%.4f', '%.4f'])
 
     @Slot(result=str)
     @Slot(float, result=str)
