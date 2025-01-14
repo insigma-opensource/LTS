@@ -50,11 +50,6 @@ Window {
             text: "Control Panel"
         }
         TabButton {
-            id: mode
-            text: "Scan"
-        }
-
-        TabButton {
             id: serialCom
             text: "Serial Terminal"
         }
@@ -70,12 +65,7 @@ Window {
 
         PageCntrlPnl {
             id: pageCntrlPnl
-            onLutOnChanged: lutOn ? pageScan.lutOn = true:pageScan.lutOn = false
         }
-        PageScan {
-            id: pageScan
-        }
-
         PageSerial {
             id: serialPage
         }
@@ -99,17 +89,6 @@ Window {
         anchors.rightMargin: 15
     }
 
-    Text {
-        id: textTask
-        text: pageScan.scanOn ? "Scanning...":"Scan Stopped"
-        color: pageScan.scanOn ? "#FF0000":"#000000"
-        anchors.left: parent.left
-        anchors.bottom: parent.bottom
-        font.pixelSize: 15
-        anchors.bottomMargin: 5
-        anchors.leftMargin: 15
-    }
-
     Button {
         id: info
         text: "i"
@@ -123,9 +102,3 @@ Window {
         id: popupInfo
     }
 }
-
-/*##^##
-Designer {
-    D{i:0;formeditorZoom:0.75}
-}
-##^##*/
