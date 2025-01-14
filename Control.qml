@@ -26,7 +26,7 @@ Window {
     minimumWidth: 305
     height: 540
     minimumHeight: 200
-    title: "CT3-2022-V1.14-INT"
+    title: "CT3-2022-V1.14"
     // @disable-check M16
     onClosing: {
         backend.systStat(0)
@@ -49,10 +49,6 @@ Window {
             id: cntrlPnl
             text: "Control Panel"
         }
-        TabButton {
-            id: serialCom
-            text: "Serial Terminal"
-        }
     }
 
     SwipeView {
@@ -65,9 +61,6 @@ Window {
 
         PageCntrlPnl {
             id: pageCntrlPnl
-        }
-        PageSerial {
-            id: serialPage
         }
     }
 
