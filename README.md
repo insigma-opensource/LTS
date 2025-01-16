@@ -47,7 +47,8 @@ CT3-2022-V1.11~
 ```
 ```
 CF3-2022-V1.8
-└── CF3-2022-V1.9
+├── Chilas Atlas v1.9s
+└── CF3-2025-V1.8K
 ```
 
 ## Deployment
