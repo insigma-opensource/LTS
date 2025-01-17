@@ -33,7 +33,7 @@ Pane {
         id: rowCntrlPnl
         width: parent.width
         height: parent.height
-        spacing: (width - 6*frameHeater1.width - frameSw.width)/6
+        spacing: (width - 4*frameHeater1.width - frameSw.width)/4
 
         Frame {
             id: frameHeater1
@@ -525,268 +525,6 @@ Pane {
         }
 
         Frame {
-            id: frameTec
-            width: 160
-            height: parent.height
-
-            Column {
-                id: columnTec
-                anchors.fill: parent
-
-                Row {
-                    id: row5
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 20
-
-                    Text {
-                        id: textHeaderTec
-                        text: "TEC "
-                        font.pixelSize: 18
-                    }
-
-                    Button {
-                        id: configTec
-                        height: 22
-                        text: "\u2699"
-                        leftPadding: 0
-                        antialiasing: true
-                        rightPadding: 0
-                        font.pointSize: 20
-                        background: Rectangle {}
-                        onClicked: popupPid.open()
-                        visible: true
-                    }
-                }
-
-                Row {
-                    id: rowTec
-                    height: columnTec.height - textHeaderTec.height - colSetGetTec.height - 2*columnTec.spacing
-                    visible: pageCntrlPnl.height < 250 ? false : true
-
-                    Gauge {
-                        id: gaugeTec
-                        height: parent.height
-                        antialiasing: true
-                        tickmarkStepSize: 1
-                        minimumValue: 15
-                        value: -1
-                        minorTickmarkCount: 1
-                        maximumValue: 30
-                        Behavior on value { NumberAnimation { duration: 100 } }
-
-                        Timer {
-                            id: timerTemp
-                            interval: 1000; repeat: true; running: switch3.checked
-                            onTriggered: {
-                                gaugeTec.value = backend.tecTemp().slice(2)
-                            }
-                        }
-                    }
-
-                    Slider {
-                        id: sliderTec
-                        height: parent.height
-                        antialiasing: true
-                        stepSize: 0.01
-                        wheelEnabled: true
-                        value: 21
-                        orientation: Qt.Vertical
-                        to: 30
-                        from: 15
-                        onValueChanged: {
-                            backend.tecTemp(value.toFixed(2)).slice(2)
-                        }
-                    }
-                    anchors.horizontalCenter: parent.horizontalCenter
-                }
-
-                Column {
-                    id: colSetGetTec
-                    width: parent.width
-                    height: 41
-                    Row {
-                        id: rowSetTec
-                        anchors.left: parent.left
-                        Text {
-                            id: textSetTec
-                            text: "Set: "
-                            anchors.verticalCenter: parent.verticalCenter
-                            font.pixelSize: 18
-                        }
-
-                        TextInput {
-                            id: textEditSetTec
-                            text: sliderTec.value.toFixed(2)
-                            font.pixelSize: 18
-                            selectByMouse: true
-                            validator: DoubleValidator{ locale: ""; bottom: 15; top: 30;}
-                            onAccepted: {
-                                sliderTec.value = text
-                            }
-
-                            MouseArea {
-                                id: mouseAreaPrecisionTec
-                                anchors.fill: parent
-                                cursorShape: Qt.IBeamCursor
-                                onPressed: function(mouse) { mouse.accepted = false }
-                                onWheel: {
-                                    var oldCurs = textEditSetTec.cursorPosition
-                                    var curs = textEditSetTec.text.length - oldCurs
-                                    if (wheel.angleDelta.y > 0) {
-                                        if (curs > 2) {
-                                            sliderTec.value += 1
-                                        } else {
-                                            sliderTec.value += (10**(curs+1))/1000
-                                        }
-
-                                    } else {
-                                        if (curs > 2) {
-                                            sliderTec.value -= 1
-                                        } else {
-                                            sliderTec.value -= (10**(curs+1))/1000
-                                        }
-                                    }
-                                    textEditSetTec.cursorPosition = textEditSetTec.text.length - curs
-                                }
-                            }
-                        }
-                        anchors.leftMargin: 40
-                    }
-
-                    Row {
-                        id: rowGetTec
-                        anchors.left: rowSetTec.left
-                        Text {
-                            id: textGetTec
-                            text: "Get: " + gaugeTec.value.toFixed(2) + " °C"
-                            font.pixelSize: 18
-                        }
-                    }
-                }
-                spacing: 15
-            }
-        }
-
-        Frame {
-            id: frameCurrent
-            width: 160
-            height: parent.height
-            Column {
-                id: columnCurrent
-                anchors.fill: parent
-                Text {
-                    id: textCurrent
-                    text: "Current"
-                    font.pixelSize: 18
-                    anchors.horizontalCenter: parent.horizontalCenter
-                }
-
-                Row {
-                    id: rowCurrent
-                    height: columnCurrent.height - textCurrent.height - colSetGetCurrent.height - 2*columnCurrent.spacing
-                    visible: pageCntrlPnl.height < 250 ? false : true
-
-                    Gauge {
-                        id: gaugeCurrent
-                        height: parent.height
-                        antialiasing: true
-                        tickmarkStepSize: 50
-                        minimumValue: 0
-                        value: 0
-                        minorTickmarkCount: 3
-                        maximumValue: 250
-                        Behavior on value { NumberAnimation { duration: 100 } }
-                    }
-
-                    Slider {
-                        id: sliderCurrent
-                        height: parent.height
-                        antialiasing: true
-                        value: 0
-                        stepSize: 0.01
-                        wheelEnabled: true
-                        orientation: Qt.Vertical
-                        to: 250
-                        onValueChanged: {
-                            gaugeCurrent.value = backend.lsrIlev(value.toFixed(2)).slice(2)
-                        }
-                    }
-                    anchors.horizontalCenter: parent.horizontalCenter
-                }
-
-                Column {
-                    id: colSetGetCurrent
-                    width: parent.width
-                    height: 41
-                    Row {
-                        id: rowSetCurrent
-                        anchors.left: parent.left
-                        Text {
-                            id: textSetCurrent
-                            text: "Set: "
-                            anchors.verticalCenter: parent.verticalCenter
-                            font.pixelSize: 18
-                        }
-
-
-                        TextInput {
-                            id: textEditSetCurrent
-                            text: sliderCurrent.value.toFixed(2)
-                            anchors.verticalCenter: parent.verticalCenter
-                            font.pixelSize: 18
-                            selectByMouse: true
-                            validator: DoubleValidator{ locale: ""; bottom: 0; top: 250;}
-                            onAccepted: {
-                                sliderCurrent.value = text
-                            }
-
-                            MouseArea {
-                                id: mouseAreaPrecisionCur
-                                anchors.fill: parent
-                                cursorShape: Qt.IBeamCursor
-                                onPressed: function(mouse) { mouse.accepted = false }
-                                onWheel: {
-                                    var oldCurs = textEditSetCurrent.cursorPosition
-                                    var curs = textEditSetCurrent.text.length - oldCurs
-                                    if (wheel.angleDelta.y > 0) {
-                                        if (curs > 2) {
-                                            sliderCurrent.value += (10**(curs))/1000
-                                        } else {
-                                            sliderCurrent.value += (10**(curs+1))/1000
-                                        }
-
-                                    } else {
-                                        if (curs > 2) {
-                                            sliderCurrent.value -= (10**(curs))/1000
-                                        } else {
-                                            sliderCurrent.value -= (10**(curs+1))/1000
-                                        }
-                                    }
-                                    textEditSetCurrent.cursorPosition = textEditSetCurrent.text.length - curs
-                                }
-                            }
-                        }
-
-                        anchors.leftMargin: 40
-                    }
-
-                    Row {
-                        id: rowGetCurrent
-                        anchors.left: rowSetCurrent.left
-
-                        Text {
-                            id: textGetCurrent
-                            text: "Get: " + gaugeCurrent.value.toFixed(2) + " mA"
-                            font.pixelSize: 18
-                        }
-
-                    }
-                }
-                spacing: 15
-            }
-        }
-
-        Frame {
             id: frameSw
             width: 244
             height: parent.height
@@ -828,31 +566,6 @@ Pane {
                     }
                 }
 
-
-                Row {
-                    id: rowSwStat1
-                    visible: pageCntrlPnl.height < 250 ? false : true
-
-                    StatusIndicator {
-                        id: statusIndicator1
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.bottom: parent.bottom
-                        active: switch2.checked
-                    }
-
-                    Switch {
-                        id: switch2
-                        text: qsTr("Current")
-                        anchors.verticalCenter: parent.verticalCenter
-                        enabled: false
-                        onToggled: {
-                            backend.lsrStat(checked+0)
-                            button2.clicked()
-                        }
-                    }
-                }
-
-
                 Row {
                     id: rowSwStat2
                     StatusIndicator {
@@ -878,16 +591,13 @@ Pane {
                             property int cFunc: 0
                             onTriggered: {
                                 if(switch3.checked) {
-
                                     if(cFunc == 0) {
                                         backend.systStat(switch3.checked+0)
+                                        backend.systP()
+                                        backend.tecStat(0)
                                         button2.clicked()
                                         cFunc++
                                     } else if(cFunc == 1) {
-                                        switch2.toggle()
-                                        switch2.toggled()
-                                        cFunc++
-                                    } else if(cFunc == 2) {
                                         switchBoost.toggle()
                                         switchBoost.toggled()
                                         offOnTimer.stop()
@@ -895,13 +605,9 @@ Pane {
                                         pageCntrlPnl.enabled = true
                                     }
                                 } else {
-                                    if(cFunc == 2) {
+                                    if(cFunc == 1) {
                                         switchBoost.toggle()
                                         switchBoost.toggled()
-                                        cFunc--
-                                    } else if(cFunc == 1) {
-                                        switch2.toggle()
-                                        switch2.toggled()
                                         cFunc--
                                     } else if(cFunc == 0) {
                                         backend.systStat(switch3.checked+0)
@@ -968,9 +674,8 @@ Pane {
                         sliderHeater1.value = backend.drvD(0).slice(2)
                         sliderHeater2.value = backend.drvD(3).slice(2)
                         sliderHeater3.value = backend.drvD(4).slice(2)
-                        sliderCurrent.value = backend.lsrIlev().slice(2)
+                        sliderHeater4.value = backend.drvD(5).slice(2)
                         print(backend.systStat().slice(2))
-                        print(backend.lsrStat().slice(2))
                         print(backend.drvStat().slice(2))
                     }
                 }
@@ -1014,9 +719,7 @@ Pane {
                         backend.saveSettings([sliderHeater2.value,
                                                      sliderHeater3.value,
                                                      sliderHeater1.value,
-                                                     sliderHeater4.value,
-                                                     sliderTec.value,
-                                                     sliderCurrent.value])
+                                                     sliderHeater4.value])
                         text = "Saved!"
                         saved.restart()
                     }
@@ -1031,201 +734,6 @@ Pane {
             }
         }
     }
-
-    Popup {
-        id: popupPid
-        modal: true
-        focus: true
-        contentHeight: framePid.height
-        contentWidth: framePid.width
-        anchors.centerIn: Overlay.overlay
-        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-
-        onAboutToShow: {
-            textGetP.text = "Get P: " + backend.setP()
-            textGetI.text = "Get I: " + backend.setI()
-            textGetD.text = "Get D: " + backend.setD()
-            textGetILim.text = "Get Max Current: " + backend.iMax()
-        }
-
-        ScrollView {
-            anchors.fill: parent
-            contentHeight: framePid.height
-            contentWidth: framePid.width
-            wheelEnabled: true
-
-        Frame {
-            id: framePid
-            width: 230
-            height: 400
-            clip: true
-
-            WheelEditInput {
-                id: weiPid
-            }
-
-            Column {
-                id: columnPid
-                anchors.fill: parent
-                spacing: 20
-
-                Text {
-                    id: textHeaderPid
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Config."
-                    font.pixelSize: 18
-                }
-
-                Row {
-                    id: rowSetP
-                    anchors.left: parent.left
-                    anchors.leftMargin: 15
-                    Text {
-                        id: textSetP
-                        text: "Set P: "
-                        anchors.verticalCenter: parent.verticalCenter
-                        font.pixelSize: 18
-                    }
-
-                    TextInput {
-                        id: textEditSetP
-                        text: "0"
-                        font.pixelSize: 18
-                        selectByMouse: true
-                        validator: DoubleValidator{ locale: ""; bottom: 0; top: 10;}
-                        onAccepted: {
-                            textGetP.text = "Get P: " + backend.setP(text)
-                            colorA.restart()
-                        }
-
-                        ColorAnimation on color { id: colorA; running: false; from: "#41cd52"; to: "#000000"; duration: 1500}
-                    }
-                }
-
-                Row {
-                    id: rowGetP
-                    anchors.left: parent.left
-                    anchors.leftMargin: 15
-                    Text {
-                        id: textGetP
-                        text: "Get P: 0"
-                        font.pixelSize: 18
-                    }
-                }
-
-                Row {
-                    id: rowSetI
-                    anchors.left: parent.left
-                    anchors.leftMargin: 15
-                    Text {
-                        id: textSetI
-                        text: "Set I: "
-                        anchors.verticalCenter: parent.verticalCenter
-                        font.pixelSize: 18
-                    }
-
-                    TextInput {
-                        id: textEditSetI
-                        text: "0"
-                        font.pixelSize: 18
-                        selectByMouse: true
-                        validator: DoubleValidator{ locale: ""; bottom: 0; top: 10;}
-                        onAccepted: {
-                            textGetI.text = "Get I: " + backend.setI(text)
-                            colorB.restart()
-                        }
-
-                        ColorAnimation on color { id: colorB; running: false; from: "#41cd52"; to: "#000000"; duration: 1500}
-                    }
-                }
-
-                Row {
-                    id: rowGetI
-                    anchors.left: parent.left
-                    anchors.leftMargin: 15
-                    Text {
-                        id: textGetI
-                        text: "Get I: 0"
-                        font.pixelSize: 18
-                    }
-                }
-
-                Row {
-                    id: rowSetD
-                    anchors.left: parent.left
-                    anchors.leftMargin: 15
-                    Text {
-                        id: textSetD
-                        text: "Set D: "
-                        anchors.verticalCenter: parent.verticalCenter
-                        font.pixelSize: 18
-                    }
-
-                    TextInput {
-                        id: textEditSetD
-                        text: "0"
-                        font.pixelSize: 18
-                        selectByMouse: true
-                        validator: DoubleValidator{ locale: ""; bottom: 0; top: 10;}
-                        onAccepted: {
-                            textGetD.text = "Get D: " + backend.setD(text)
-                            colorC.restart()
-                        }
-
-                        ColorAnimation on color { id: colorC; running: false; from: "#41cd52"; to: "#000000"; duration: 1500}
-                    }
-                }
-
-                Row {
-                    id: rowGetD
-                    anchors.left: parent.left
-                    anchors.leftMargin: 15
-                    Text {
-                        id: textGetD
-                        text: "Get D: 0"
-                        font.pixelSize: 18
-                    }
-                }
-
-                Row {
-                    id: rowSetILim
-                    anchors.left: parent.left
-                    anchors.leftMargin: 15
-                    Text {
-                        id: textSetILim
-                        text: "Set Max Current: "
-                        anchors.verticalCenter: parent.verticalCenter
-                        font.pixelSize: 18
-                    }
-
-                    TextInput {
-                        id: textEditSetILim
-                        text: "0"
-                        font.pixelSize: 18
-                        selectByMouse: true
-                        validator: DoubleValidator{ locale: ""; bottom: 0; top: 10;}
-                        onAccepted: {
-                            textGetILim.text = "Get Max Current: " + backend.iMax(text)
-                            colorD.restart()
-                        }
-
-                        ColorAnimation on color { id: colorD; running: false; from: "#41cd52"; to: "#000000"; duration: 1500}
-                    }
-                }
-
-                Row {
-                    id: rowGetILim
-                    anchors.left: parent.left
-                    anchors.leftMargin: 15
-                    Text {
-                        id: textGetILim
-                        text: "Get Max Current: 0"
-                        font.pixelSize: 18
-                    }
-                }
-            }
-        }
-    } }
 
     BusyIndicator {
         id: busyIndicator
@@ -1244,8 +752,6 @@ Pane {
             sliderHeater3.value = fileDialog.specs[2][cntr]
             sliderHeater1.value = fileDialog.specs[3][cntr]
             sliderHeater4.value = fileDialog.specs[0][cntr]
-            sliderTec.value = fileDialog.specs[4][cntr]
-            sliderCurrent.value = fileDialog.specs[5][cntr]
             cntr--
 
             if(cntr == 0) {

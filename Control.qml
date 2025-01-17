@@ -22,11 +22,11 @@ import QtQuick.Extras 1.4
 
 Window {
     id: window
-    width: 1300
-    minimumWidth: 1300
+    width: 950
+    minimumWidth: 950
     height: 500
     minimumHeight: 220
-    title: "CF3-2022-V1.8"
+    title: "CF3-2025-V1.8K"
     // @disable-check M16
     onClosing: {
         backend.rst()

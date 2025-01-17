@@ -95,28 +95,6 @@ class pyLaser(QObject):
 
     @Slot(result=str)
     @Slot(int, result=str)
-    def lsrStat(self, arg=None):  # control and return laser state
-        if arg is None:
-            self.write("LSR:STAT?")
-        else:
-            self.write("LSR:STAT %d" % arg)
-            success = self.read()
-            self.write("LSR:STAT?")
-        return self.read()
-
-    @Slot(result=str)
-    @Slot(float, result=str)
-    def lsrIlev(self, arg=None):  # control and return laser current level
-        if arg is None:
-            self.write("LSR:ILEV?")
-        else:
-            self.write("LSR:ILEV %.2f" % arg)
-            success = self.read()
-            self.write("LSR:ILEV?")
-        return self.read()
-
-    @Slot(result=str)
-    @Slot(int, result=str)
     def drvStat(self, arg=None):  # control and return driver state
         if arg is None:
             self.write("DRV:STAT?")
@@ -142,16 +120,15 @@ class pyLaser(QObject):
         self.write("DRV:CLR")
         success = self.read()
 
-    @Slot(result=str)
-    @Slot(float, result=str)
-    def tecTemp(self, arg=None):  # control and return tec temp level
-        if arg is None:
-            self.write("TEC:TEMP?")
-        else:
-            self.write("TEC:TTGT %.2f" % arg)
-            success = self.read()
-            self.write("TEC:TTGT?")
-        return self.read()
+    @Slot()
+    def systP(self):
+        self.write("SYST:PWD X")
+        success = self.read()
+
+    @Slot(int, result=str)
+    def tecStat(self, arg):
+        self.write("TEC:STAT %d" % arg)
+        success = self.read()
 
     @Slot(QUrl, result=list)
     def getSettings(self, path):
@@ -165,51 +142,5 @@ class pyLaser(QObject):
         settings = np.array([[0, set[3], set[3], set[3]],
                              [3, set[0], set[0], set[0]],
                              [4, set[1], set[1], set[1]],
-                             [5, set[2], set[2], set[2]],
-                             [7, set[4], float(set[4])+0.5, float(set[4])+1],
-                             [8, set[5], set[5], set[5]]])
+                             [5, set[2], set[2], set[2]]])
         np.savetxt(date+'.csv', settings, delimiter=";", fmt=['%d', '%.2f', '%.2f', '%.2f'])
-
-    @Slot(result=str)
-    @Slot(float, result=str)
-    def setP(self, arg=None):  # control and return P
-        if arg is None:
-            self.write("TEC:CTRL:PSHR?")
-        else:
-            self.write("TEC:CTRL:PSHR %.3f" % arg)
-            success = self.read()
-            self.write("TEC:CTRL:PSHR?")
-        return self.read()
-
-    @Slot(result=str)
-    @Slot(float, result=str)
-    def setI(self, arg=None):  # control and return I
-        if arg is None:
-            self.write("TEC:CTRL:ISHR?")
-        else:
-            self.write("TEC:CTRL:ISHR %.3f" % arg)
-            success = self.read()
-            self.write("TEC:CTRL:ISHR?")
-        return self.read()
-
-    @Slot(result=str)
-    @Slot(float, result=str)
-    def setD(self, arg=None):  # control and return D
-        if arg is None:
-            self.write("TEC:CTRL:DSHR?")
-        else:
-            self.write("TEC:CTRL:DSHR %.3f" % arg)
-            success = self.read()
-            self.write("TEC:CTRL:DSHR?")
-        return self.read()
-
-    @Slot(result=str)
-    @Slot(float, result=str)
-    def iMax(self, arg=None):  # control and return max tec I
-        if arg is None:
-            self.write("TEC:CFG:ILIM?")
-        else:
-            self.write("TEC:CFG:ILIM %.3f" % arg)
-            success = self.read()
-            self.write("TEC:CFG:ILIM?")
-        return self.read()
